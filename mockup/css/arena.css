@@ -1,3 +1,4 @@
-.form-inline .search-input {
-    width: 600px;
+.jumbotron {
+    background: url("../img/jumbotron_bg.jpg") no-repeat center center;
+    background-size: cover;
 }

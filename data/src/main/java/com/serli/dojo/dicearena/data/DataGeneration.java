@@ -22,7 +22,7 @@ public class DataGeneration {
 
 	private static final int MAX_SCORE = 100;
 	private static final int FILES_NUMBER = 5;
-	private static final int LINES_NUMBER = 1000;
+	private static final int LINES_NUMBER = 100;
 	private static final String INDEX = "engine";
 	private static final String TYPE_GAME = "game";
 	private static final String TYPE_ACCOUNT = "account";
@@ -32,7 +32,7 @@ public class DataGeneration {
 		List<Game> games = readGamesIn("games");
 		List<Account> accounts = readAccountsIn("names", "domains", "locations");
 
-		LongStream.range(0L, FILES_NUMBER * LINES_NUMBER).forEach(id -> {
+		LongStream.range(1L, FILES_NUMBER * LINES_NUMBER).forEach(id -> {
 			LocalDateTime startTime = pickDateTime();
 			Match match = new Match(id, pickIn(games), startTime, pickDateTime(startTime, 6));
 			match.scores = pickScoresIn(accounts, match);
@@ -103,9 +103,15 @@ public class DataGeneration {
 		int playersCount = Math.min(random.nextInt(maxPlayers) + minPlayers, accounts.size());
 
 		Collections.shuffle(accounts);
-		Set<Account> players = accounts.stream().limit(playersCount).collect(Collectors.toSet());
+		Set<Account> playingAccounts = accounts.stream().limit(playersCount).collect(Collectors.toSet());
 
-		return players.stream().collect(Collectors.toMap(player -> formatName(player, match.game), player -> random.nextInt(MAX_SCORE)));
+		return playingAccounts.stream().collect(Collectors.toMap(account -> {
+			String player = formatName(account, match.game);
+			if (!account.players.containsKey(player)) {
+				account.players.put(player, match.game);
+			}
+			return player;
+		}, player -> random.nextInt(MAX_SCORE)));
 	}
 
 	private static <T> T pickIn(List<T> objects) {

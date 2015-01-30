@@ -26,7 +26,7 @@ public class Account {
 
 	public String toJsonString() {
 		String playersString = players.entrySet().stream().map(player -> {
-			return String.format("{ \"name\" : \"%s\", \"game\" : [%s] }", player.getKey(), player.getValue().name);
+			return String.format("{ \"name\" : \"%s\", \"game\" : \"%s\" }", player.getKey(), player.getValue().name);
 		}).collect(Collectors.joining(", "));
 
 		return String.format("{ \"email\" : \"%s\", \"location\" : [%s], \"subscription\" : \"%s\", \"players\" : [ %s ] }",

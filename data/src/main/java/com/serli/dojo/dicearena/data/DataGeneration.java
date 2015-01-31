@@ -21,7 +21,7 @@ import com.google.common.primitives.Ints;
 public class DataGeneration {
 
 	private static final int MAX_SCORE = 100;
-	private static final int FILES_NUMBER = 5;
+	private static final int FILES_NUMBER = 1;
 	private static final int LINES_NUMBER = 100;
 	private static final String INDEX = "engine";
 	private static final String TYPE_GAME = "game";
@@ -100,7 +100,7 @@ public class DataGeneration {
 
 		int minPlayers = match.game.minPlayers != null ? match.game.minPlayers : 1;
 		int maxPlayers = match.game.maxPlayers != null ? match.game.maxPlayers : accounts.size();
-		int playersCount = Math.min(random.nextInt(maxPlayers) + minPlayers, accounts.size());
+		int playersCount = Math.max(Math.min(random.nextInt(maxPlayers) + minPlayers, accounts.size()), 20);
 
 		Collections.shuffle(accounts);
 		Set<Account> playingAccounts = accounts.stream().limit(playersCount).collect(Collectors.toSet());

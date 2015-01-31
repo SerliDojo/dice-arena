@@ -1,0 +1,27 @@
+{
+	"account": {
+		"properties": {
+			"email": {
+				"type": "string"
+			},
+			"location": {
+				"type": "double"
+			},
+			"players": {
+				"type": "nested",
+				"properties": {
+					"game": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					}
+				}
+			},
+			"subscription": {
+				"type": "date",
+				"format": "dateOptionalTime"
+			}
+		}
+	}
+}

@@ -92,7 +92,7 @@ public class DataGeneration {
 	}
 
 	private static List<String> readIn(String name) throws IOException {
-		return Files.readLines(new File("./src/main/resources/" + name + ".txt"), Charsets.UTF_8);
+		return Files.readLines(new File("./src/main/resources/data/" + name + ".txt"), Charsets.UTF_8);
 	}
 
 	private static Map<String, Integer> pickScoresIn(List<Account> accounts, Match match) {

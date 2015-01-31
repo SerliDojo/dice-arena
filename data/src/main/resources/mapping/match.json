@@ -1,0 +1,33 @@
+{
+	"match": {
+		"properties": {
+			"endTime": {
+				"type": "date",
+				"format": "dateOptionalTime"
+			},
+			"game": {
+				"type": "string"
+			},
+			"id": {
+				"type": "string"
+			},
+			"scores": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"score": {
+						"type": "long"
+					}
+				}
+			},
+			"startTime": {
+				"type": "date",
+				"format": "dateOptionalTime"
+			},
+			"winner": {
+				"type": "string"
+			}
+		}
+	}
+}

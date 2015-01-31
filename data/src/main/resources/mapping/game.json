@@ -1,0 +1,15 @@
+{
+	"game": {
+		"properties": {
+			"description": {
+				"type": "string"
+			},
+			"minPlayers": {
+				"type": "long"
+			},
+			"name": {
+				"type": "string"
+			}
+		}
+	}
+}

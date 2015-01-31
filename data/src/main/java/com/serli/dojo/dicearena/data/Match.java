@@ -40,7 +40,7 @@ public class Match {
 			return String.format("{ \"name\" : \"%s\", \"score\" : %d }", entry.getKey(), entry.getValue());
 		}).collect(Collectors.joining(", "));
 
-		return String.format("{ \"id\" : \"%d\", \"game\" : %s, \"startTime\" : \"%s\", \"endTime\" : \"%s\", \"scores\" : [ %s ], \"winner\" : \"%s\" }",
+		return String.format("{ \"id\" : \"%d\", \"game\" : \"%s\", \"startTime\" : \"%s\", \"endTime\" : \"%s\", \"scores\" : [ %s ], \"winner\" : \"%s\" }",
 				id, game.name, startTime, endTime, scoresString, winnerString);
 	}
 }

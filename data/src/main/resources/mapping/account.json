@@ -1,8 +1,11 @@
 {
 	"account": {
 		"properties": {
-			"email": {
+			"name": {
 				"type": "string"
+			}
+			"email": {
+				"type": "email"
 			},
 			"location": {
 				"type": "double"

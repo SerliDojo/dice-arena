@@ -3,7 +3,6 @@ package com.serli.dojo.dicearena.data;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -23,21 +22,21 @@ public class DataGeneration {
 	private static final int MAX_SCORE = 100;
 	private static final int FILES_NUMBER = 1;
 	private static final int LINES_NUMBER = 100;
-	private static final String INDEX = "engine";
-	private static final String TYPE_GAME = "game";
-	private static final String TYPE_ACCOUNT = "account";
-	private static final String TYPE_MATCH = "match";
 
 	public static void main(String[] args) throws IOException {
 		List<Game> games = readGamesIn("games");
 		List<Account> accounts = readAccountsIn("names", "domains", "locations");
+		List<Player> players = readPlayersIn("qualifiers", accounts, games);
 
 		LongStream.range(1L, FILES_NUMBER * LINES_NUMBER).forEach(id -> {
 			LocalDateTime startTime = pickDateTime();
-			Match match = new Match(id, pickIn(games), startTime, pickDateTime(startTime, 6));
-			match.scores = pickScoresIn(accounts, match);
+			Game game = pickIn(games);
+			List<Player> gamePlayers = players.stream().filter(player -> player.game.equals(game)).collect(Collectors.toList());
 
-			appendInAs(String.format("data-%03d.json", id / LINES_NUMBER), match.toJsonString(), TYPE_MATCH);
+			Match match = new Match(id, game, startTime, pickDateTimeFrom(startTime, 6));
+			match.scores = pickScoresIn(gamePlayers, match);
+
+			appendIn(String.format("data.json", id / LINES_NUMBER), match.toJsonString());
 
 			System.out.print(".");
 			if (id % LINES_NUMBER == 0) {
@@ -45,21 +44,9 @@ public class DataGeneration {
 			}
 		});
 
-		appendInAs("data-games.json", games.stream().map(Game::toJsonString).collect(Collectors.toList()), TYPE_GAME);
-		appendInAs("data-accounts.json", accounts.stream().map(Account::toJsonString).collect(Collectors.toList()), TYPE_ACCOUNT);
-	}
-
-	private static String formatName(Account account, Game game) {
-		return account.name + "-" + game.name.toLowerCase().replaceAll("\\s", "");
-	}
-
-	private static void appendInAs(String fileName, Collection<String> objects, String type) throws IOException {
-		objects.stream().forEach(object -> appendInAs(fileName, object, type));
-	}
-
-	private static void appendInAs(String fileName, String object, String type) {
-		appendIn(fileName, String.format("{ \"index\" : { \"_index\" : \"%s\", \"_type\" : \"%s\" } }", INDEX, type));
-		appendIn(fileName, object);
+		games.stream().map(Entity::toJsonString).forEach(entity -> appendIn("data.json", entity));
+		accounts.stream().map(Entity::toJsonString).forEach(entity -> appendIn("data.json", entity));
+		players.stream().map(Entity::toJsonString).forEach(entity -> appendIn("data.json", entity));
 	}
 
 	private static void appendIn(String fileName, String object) {
@@ -91,27 +78,38 @@ public class DataGeneration {
 		}).collect(Collectors.toList());
 	}
 
+	private static List<Player> readPlayersIn(String qualifiersFile, List<Account> accounts, List<Game> games) throws IOException {
+		List<String> qualifiers = readIn(qualifiersFile);
+		Random random = new Random();
+
+		return accounts.stream().map(account -> {
+			Collections.shuffle(qualifiers);
+			int playersCount = random.nextInt(Math.min(qualifiers.size(), 6));
+			return qualifiers.stream().limit(playersCount).map(qualifier ->
+					pickPlayer(qualifier, account, games)).collect(Collectors.toList());
+		}).flatMap(list -> list.stream()).collect(Collectors.toList());
+	}
+
+	private static Player pickPlayer(String qualifier, Account account, List<Game> games) {
+		return new Player(String.format("%s-%s", qualifier, account.name), account, pickIn(games));
+	}
+
 	private static List<String> readIn(String name) throws IOException {
 		return Files.readLines(new File("./src/main/resources/data/" + name + ".txt"), Charsets.UTF_8);
 	}
 
-	private static Map<String, Integer> pickScoresIn(List<Account> accounts, Match match) {
+	private static Map<String, Integer> pickScoresIn(List<Player> players, Match match) {
 		Random random = new Random();
 
 		int minPlayers = match.game.minPlayers != null ? match.game.minPlayers : 1;
-		int maxPlayers = match.game.maxPlayers != null ? match.game.maxPlayers : accounts.size();
-		int playersCount = Math.max(Math.min(random.nextInt(maxPlayers) + minPlayers, accounts.size()), 20);
+		int maxPlayers = match.game.maxPlayers != null ? match.game.maxPlayers : players.size();
+		maxPlayers = Math.min(maxPlayers, 10);
+		int playersCount = random.nextInt(maxPlayers - minPlayers + 1) + minPlayers;
 
-		Collections.shuffle(accounts);
-		Set<Account> playingAccounts = accounts.stream().limit(playersCount).collect(Collectors.toSet());
+		Collections.shuffle(players);
+		Set<Player> selectedPlayers = players.stream().limit(playersCount).collect(Collectors.toSet());
 
-		return playingAccounts.stream().collect(Collectors.toMap(account -> {
-			String player = formatName(account, match.game);
-			if (!account.players.containsKey(player)) {
-				account.players.put(player, match.game);
-			}
-			return player;
-		}, player -> random.nextInt(MAX_SCORE)));
+		return selectedPlayers.stream().collect(Collectors.toMap(player -> player.name, player -> random.nextInt(MAX_SCORE)));
 	}
 
 	private static <T> T pickIn(List<T> objects) {
@@ -119,10 +117,10 @@ public class DataGeneration {
 	}
 
 	private static LocalDateTime pickDateTime() {
-		return pickDateTime(LocalDateTime.of(2014, 1, 1, 0, 0), 365 * 24 * 60);
+		return pickDateTimeFrom(LocalDateTime.of(2014, 1, 1, 0, 0), 365 * 24 * 60);
 	}
 
-	private static LocalDateTime pickDateTime(LocalDateTime from, int minutesRange) {
+	private static LocalDateTime pickDateTimeFrom(LocalDateTime from, int minutesRange) {
 		return from.plusMinutes(new Random().nextInt(minutesRange));
 	}
 }

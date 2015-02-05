@@ -1,9 +1,6 @@
 package com.serli.dojo.dicearena.data;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Class dedicated to carry account information, including the of players
@@ -11,11 +8,12 @@ import java.util.stream.Collectors;
  * 
  * @author Laurent
  */
-public class Account {
+public class Account implements Entity {
+
+	public static final String TYPE = "account";
 
 	public String name, email, locations;
 	public LocalDate subscription;
-	public Map<String, Game> players = new HashMap<>();
 
 	public Account(String name, String email, String locations, LocalDate subscription) {
 		this.name = name;
@@ -24,12 +22,9 @@ public class Account {
 		this.subscription = subscription;
 	}
 
+	@Override
 	public String toJsonString() {
-		String playersString = players.entrySet().stream().map(player -> {
-			return String.format("{ \"name\" : \"%s\", \"game\" : \"%s\" }", player.getKey(), player.getValue().name);
-		}).collect(Collectors.joining(", "));
-
-		return String.format("{ \"email\" : \"%s\", \"location\" : [%s], \"subscription\" : \"%s\", \"players\" : [ %s ] }",
-				email, locations, subscription, playersString);
+		return String.format("{ \"index\" : { \"_index\" : \"%s\", \"_type\" : \"%s\", \"_id\" : \"%s\" } }\n{ \"email\" : \"%s\", \"location\" : [%s], \"subscription\" : \"%s\" }",
+				INDEX, TYPE, email, email, locations, subscription);
 	}
 }

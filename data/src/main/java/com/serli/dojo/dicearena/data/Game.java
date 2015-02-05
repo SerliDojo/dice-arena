@@ -5,7 +5,9 @@ package com.serli.dojo.dicearena.data;
  * 
  * @author Laurent
  */
-public class Game {
+public class Game implements Entity {
+
+	public static final String TYPE = "game";
 
 	public String name, description;
 	public Integer minPlayers, maxPlayers;
@@ -19,6 +21,7 @@ public class Game {
 
 	public String toJsonString() {
 		StringBuilder builder = new StringBuilder();
+		builder.append(String.format("{ \"index\" : { \"_index\" : \"%s\", \"_type\" : \"%s\", \"_id\" : \"%s\" } }\n", INDEX, TYPE, name));
 		builder.append("{ \"name\" : \"").append(name).append("\"");
 		if (minPlayers != null) {
 			builder.append(", \"minPlayers\" : ").append(minPlayers);

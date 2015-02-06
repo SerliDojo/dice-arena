@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class Match implements Entity {
 
 	public static final String TYPE = "match";
+	public static final String MAPPING = "{ \"match\": { \"properties\": { \"id\": { \"type\": \"string\" }, \"game\": { \"type\": \"string\" }, \"startTime\": { \"type\": \"date\", \"format\": \"dateOptionalTime\" }, \"endTime\": { \"type\": \"date\", \"format\": \"dateOptionalTime\" }, \"winner\": { \"type\": \"string\" }, \"scores\": { \"properties\": { \"player\": { \"type\": \"string\" }, \"score\": { \"type\": \"long\" } } } } }}";
 
 	public Long id;
 	public Game game;
@@ -29,8 +30,13 @@ public class Match implements Entity {
 	}
 
 	@Override
-	public String toIndexString() {
-		return String.format("{ \"index\" : { \"_index\" : \"%s\", \"_type\" : \"%s\", \"_id\" : \"%s\" } }", INDEX, TYPE, id);
+	public String getType() {
+		return TYPE;
+	}
+
+	@Override
+	public String getId() {
+		return id.toString();
 	}
 
 	@Override

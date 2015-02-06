@@ -8,8 +8,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
+
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.index.IndexRequestBuilder;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
@@ -38,19 +49,28 @@ public class DataGeneration {
 			return match;
 		}).collect(Collectors.toList());
 
-		games.stream().map(Entity::toBulkString).forEach(entity -> appendIn("data.json", entity));
-		accounts.stream().map(Entity::toBulkString).forEach(entity -> appendIn("data.json", entity));
-		players.stream().map(Entity::toBulkString).forEach(entity -> appendIn("data.json", entity));
-		matches.stream().map(Entity::toBulkString).forEach(entity -> appendIn("data.json", entity));
-	}
+		try (TransportClient transportClient = new TransportClient()) {
+			Client client = transportClient.addTransportAddress(new InetSocketTransportAddress("localhost", 9300));
 
-	private static void appendIn(String fileName, String object) {
-		File file = new File(fileName);
-		try {
-			Files.append(object, file, Charsets.UTF_8);
-			Files.append("\n", file, Charsets.UTF_8);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+			client.admin().indices().delete(new DeleteIndexRequest(Entity.INDEX));
+			client.admin().indices().create(new CreateIndexRequest(Entity.INDEX));
+			client.admin().indices().putMapping(new PutMappingRequest(Entity.INDEX).source(Game.MAPPING));
+			client.admin().indices().putMapping(new PutMappingRequest(Entity.INDEX).source(Account.MAPPING));
+			client.admin().indices().putMapping(new PutMappingRequest(Entity.INDEX).source(Player.MAPPING));
+			client.admin().indices().putMapping(new PutMappingRequest(Entity.INDEX).source(Match.MAPPING));
+
+			BulkRequestBuilder bulkRequest = client.prepareBulk();
+			Function<Entity, IndexRequestBuilder> index = entity -> client.prepareIndex(Entity.INDEX, entity.getType(), entity.getId()).setSource(entity.toJsonString());
+
+			games.stream().map(index).forEach(bulkRequest::add);
+			accounts.stream().map(index).forEach(bulkRequest::add);
+			players.stream().map(index).forEach(bulkRequest::add);
+			matches.stream().map(index).forEach(bulkRequest::add);
+
+			BulkResponse bulkResponse = bulkRequest.execute().actionGet();
+			if (bulkResponse.hasFailures()) {
+				System.out.println("Failures during index");
+			}
 		}
 	}
 
@@ -86,8 +106,8 @@ public class DataGeneration {
 	}
 
 	private static Player pickPlayer(String qualifier, Account account, List<Game> games) {
-		String name = String.format("%s-%s", qualifier, account.email);
-		if(name.contains("@")) {
+		String name = String.format("%s %s", qualifier.substring(0, 1).toUpperCase() + qualifier.substring(1), account.email.substring(0, 1).toUpperCase() + account.email.substring(1));
+		if (name.contains("@")) {
 			name = name.substring(0, name.indexOf("@"));
 		}
 		return new Player(name, account, pickIn(games));

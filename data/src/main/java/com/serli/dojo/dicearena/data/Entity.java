@@ -2,13 +2,15 @@ package com.serli.dojo.dicearena.data;
 
 public interface Entity {
 
-	final String INDEX = "engine";
+	final String INDEX = "arena-stats";
 
-	String toIndexString();
+	default String getIndex() {
+		return INDEX;
+	}
+
+	String getType();
+
+	String getId();
 
 	String toJsonString();
-	
-	default String toBulkString() {
-		return toIndexString() + "\n" + toJsonString();
-	}
 }

@@ -11,6 +11,7 @@ import java.time.LocalDate;
 public class Account implements Entity {
 
 	public static final String TYPE = "account";
+	public static final String MAPPING = "{ \"account\": { \"properties\": { \"email\": { \"type\": \"email\" }, \"location\": { \"type\": \"double\" }, \"subscription\": { \"type\": \"date\", \"format\": \"dateOptionalTime\" }, \"players\": { \"type\": \"string\" } } }}";
 
 	public String email, locations;
 	public LocalDate subscription;
@@ -22,8 +23,13 @@ public class Account implements Entity {
 	}
 
 	@Override
-	public String toIndexString() {
-		return String.format("{ \"index\" : { \"_index\" : \"%s\", \"_type\" : \"%s\", \"_id\" : \"%s\" } }", INDEX, TYPE, email);
+	public String getType() {
+		return TYPE;
+	}
+
+	@Override
+	public String getId() {
+		return email;
 	}
 
 	@Override

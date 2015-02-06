@@ -8,6 +8,7 @@ package com.serli.dojo.dicearena.data;
 public class Game implements Entity {
 
 	public static final String TYPE = "game";
+	public static final String MAPPING = "{ \"game\": { \"properties\": { \"name\": { \"type\": \"string\" }, \"description\": { \"type\": \"string\" }, \"minPlayers\": { \"type\": \"long\" }, \"maxPlayers\": { \"type\": \"long\" } } }}";
 
 	public String name, description;
 	public Integer minPlayers, maxPlayers;
@@ -20,8 +21,13 @@ public class Game implements Entity {
 	}
 
 	@Override
-	public String toIndexString() {
-		return String.format("{ \"index\" : { \"_index\" : \"%s\", \"_type\" : \"%s\", \"_id\" : \"%s\" } }", INDEX, TYPE, name);
+	public String getType() {
+		return TYPE;
+	}
+
+	@Override
+	public String getId() {
+		return name;
 	}
 
 	public String toJsonString() {

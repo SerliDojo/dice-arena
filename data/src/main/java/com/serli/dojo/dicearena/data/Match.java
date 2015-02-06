@@ -29,6 +29,11 @@ public class Match implements Entity {
 	}
 
 	@Override
+	public String toIndexString() {
+		return String.format("{ \"index\" : { \"_index\" : \"%s\", \"_type\" : \"%s\", \"_id\" : \"%s\" } }", INDEX, TYPE, id);
+	}
+
+	@Override
 	public String toJsonString() {
 		Optional<Entry<String, Integer>> winner = scores.entrySet().stream().collect(Collectors.maxBy((o1, o2) -> {
 			return o1.getValue().compareTo(o2.getValue());
@@ -40,10 +45,10 @@ public class Match implements Entity {
 		}
 
 		String scoresString = scores.entrySet().stream().map(entry -> {
-			return String.format("{ \"name\" : \"%s\", \"score\" : %d }", entry.getKey(), entry.getValue());
+			return String.format("{ \"player\" : \"%s\", \"score\" : %d }", entry.getKey(), entry.getValue());
 		}).collect(Collectors.joining(", "));
 
-		return String.format("{ \"index\" : { \"_index\" : \"%s\", \"_type\" : \"%s\", \"_id\" : \"%s\" } }\n{ \"id\" : \"%d\", \"game\" : \"%s\", \"startTime\" : \"%s\", \"endTime\" : \"%s\", \"scores\" : [ %s ], \"winner\" : \"%s\" }",
-				INDEX, TYPE, id, id, game.name, startTime, endTime, scoresString, winnerString);
+		return String.format("{ \"id\" : \"%d\", \"game\" : \"%s\", \"startTime\" : \"%s\", \"endTime\" : \"%s\", \"scores\" : [ %s ], \"winner\" : \"%s\" }",
+				id, game.name, startTime, endTime, scoresString, winnerString);
 	}
 }

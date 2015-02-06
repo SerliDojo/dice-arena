@@ -20,8 +20,12 @@ public class Player implements Entity {
 	}
 
 	@Override
+	public String toIndexString() {
+		return String.format("{ \"index\" : { \"_index\" : \"%s\", \"_type\" : \"%s\", \"_id\" : \"%s\" } }", INDEX, TYPE, name);
+	}
+
+	@Override
 	public String toJsonString() {
-		return String.format("{ \"index\" : { \"_index\" : \"%s\", \"_type\" : \"%s\", \"parent\" : \"%s\" } }\n{ \"name\" : \"%s\", \"game\" : \"%s\" }", 
-				INDEX, TYPE, account.email, name, game.name);
+		return String.format("{ \"name\" : \"%s\", \"game\" : \"%s\", \"account\" : \"%s\" }", name, game.name, account.email);
 	}
 }

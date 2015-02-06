@@ -1,0 +1,15 @@
+{
+	"player": {
+		"properties": {
+			"name": {
+				"type": "string"
+			}
+			"game": {
+				"type": "string"
+			},
+			"account": {
+				"type": "string"
+			}
+		}
+	}
+}

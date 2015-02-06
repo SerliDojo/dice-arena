@@ -28,25 +28,20 @@ public class DataGeneration {
 		List<Account> accounts = readAccountsIn("names", "domains", "locations");
 		List<Player> players = readPlayersIn("qualifiers", accounts, games);
 
-		LongStream.range(1L, FILES_NUMBER * LINES_NUMBER).forEach(id -> {
+		List<Match> matches = LongStream.range(1L, FILES_NUMBER * LINES_NUMBER).mapToObj(id -> {
 			LocalDateTime startTime = pickDateTime();
 			Game game = pickIn(games);
 			List<Player> gamePlayers = players.stream().filter(player -> player.game.equals(game)).collect(Collectors.toList());
 
 			Match match = new Match(id, game, startTime, pickDateTimeFrom(startTime, 6));
 			match.scores = pickScoresIn(gamePlayers, match);
+			return match;
+		}).collect(Collectors.toList());
 
-			appendIn(String.format("data.json", id / LINES_NUMBER), match.toJsonString());
-
-			System.out.print(".");
-			if (id % LINES_NUMBER == 0) {
-				System.out.println();
-			}
-		});
-
-		games.stream().map(Entity::toJsonString).forEach(entity -> appendIn("data.json", entity));
-		accounts.stream().map(Entity::toJsonString).forEach(entity -> appendIn("data.json", entity));
-		players.stream().map(Entity::toJsonString).forEach(entity -> appendIn("data.json", entity));
+		games.stream().map(Entity::toBulkString).forEach(entity -> appendIn("data.json", entity));
+		accounts.stream().map(Entity::toBulkString).forEach(entity -> appendIn("data.json", entity));
+		players.stream().map(Entity::toBulkString).forEach(entity -> appendIn("data.json", entity));
+		matches.stream().map(Entity::toBulkString).forEach(entity -> appendIn("data.json", entity));
 	}
 
 	private static void appendIn(String fileName, String object) {
@@ -74,7 +69,7 @@ public class DataGeneration {
 		List<String> locations = readIn(locationsFile);
 
 		return names.stream().map(name -> {
-			return new Account(name, String.format("%s@%s", name, pickIn(domains)), pickIn(locations), pickDateTime().toLocalDate());
+			return new Account(String.format("%s@%s", name, pickIn(domains)), pickIn(locations), pickDateTime().toLocalDate());
 		}).collect(Collectors.toList());
 	}
 
@@ -91,7 +86,11 @@ public class DataGeneration {
 	}
 
 	private static Player pickPlayer(String qualifier, Account account, List<Game> games) {
-		return new Player(String.format("%s-%s", qualifier, account.name), account, pickIn(games));
+		String name = String.format("%s-%s", qualifier, account.email);
+		if(name.contains("@")) {
+			name = name.substring(0, name.indexOf("@"));
+		}
+		return new Player(name, account, pickIn(games));
 	}
 
 	private static List<String> readIn(String name) throws IOException {

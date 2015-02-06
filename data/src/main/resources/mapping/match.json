@@ -1,32 +1,32 @@
 {
 	"match": {
 		"properties": {
-			"endTime": {
-				"type": "date",
-				"format": "dateOptionalTime"
+			"id": {
+				"type": "string"
 			},
 			"game": {
 				"type": "string"
 			},
-			"id": {
+			"startTime": {
+				"type": "date",
+				"format": "dateOptionalTime"
+			},
+			"endTime": {
+				"type": "date",
+				"format": "dateOptionalTime"
+			},
+			"winner": {
 				"type": "string"
 			},
 			"scores": {
 				"properties": {
-					"name": {
+					"player": {
 						"type": "string"
 					},
 					"score": {
 						"type": "long"
 					}
 				}
-			},
-			"startTime": {
-				"type": "date",
-				"format": "dateOptionalTime"
-			},
-			"winner": {
-				"type": "string"
 			}
 		}
 	}

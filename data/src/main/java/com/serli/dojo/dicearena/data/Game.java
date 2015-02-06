@@ -19,9 +19,13 @@ public class Game implements Entity {
 		this.description = description;
 	}
 
+	@Override
+	public String toIndexString() {
+		return String.format("{ \"index\" : { \"_index\" : \"%s\", \"_type\" : \"%s\", \"_id\" : \"%s\" } }", INDEX, TYPE, name);
+	}
+
 	public String toJsonString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(String.format("{ \"index\" : { \"_index\" : \"%s\", \"_type\" : \"%s\", \"_id\" : \"%s\" } }\n", INDEX, TYPE, name));
 		builder.append("{ \"name\" : \"").append(name).append("\"");
 		if (minPlayers != null) {
 			builder.append(", \"minPlayers\" : ").append(minPlayers);

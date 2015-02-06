@@ -12,19 +12,22 @@ public class Account implements Entity {
 
 	public static final String TYPE = "account";
 
-	public String name, email, locations;
+	public String email, locations;
 	public LocalDate subscription;
 
-	public Account(String name, String email, String locations, LocalDate subscription) {
-		this.name = name;
+	public Account(String email, String locations, LocalDate subscription) {
 		this.email = email;
 		this.locations = locations;
 		this.subscription = subscription;
 	}
 
 	@Override
+	public String toIndexString() {
+		return String.format("{ \"index\" : { \"_index\" : \"%s\", \"_type\" : \"%s\", \"_id\" : \"%s\" } }", INDEX, TYPE, email);
+	}
+
+	@Override
 	public String toJsonString() {
-		return String.format("{ \"index\" : { \"_index\" : \"%s\", \"_type\" : \"%s\", \"_id\" : \"%s\" } }\n{ \"email\" : \"%s\", \"location\" : [%s], \"subscription\" : \"%s\" }",
-				INDEX, TYPE, email, email, locations, subscription);
+		return String.format("{ \"email\" : \"%s\", \"location\" : [%s], \"subscription\" : \"%s\" }", email, locations, subscription);
 	}
 }

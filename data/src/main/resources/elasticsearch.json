@@ -1,0 +1,20 @@
+{
+	"node" : {
+		"http" : {
+			"enabled" : "true"
+		}
+	},
+	"path" : {
+		"logs" : "target/elasticsearch/logs",
+		"data" : "target/elasticsearch/data"
+	},
+	"gateway" : {
+		"type" : "none"
+	},
+	"index" : {
+		"store" : {
+			"type" : "memory"
+		}
+	}
+}
+

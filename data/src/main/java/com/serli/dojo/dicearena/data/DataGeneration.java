@@ -3,25 +3,15 @@ package com.serli.dojo.dicearena.data;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
-
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
-import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
-import org.elasticsearch.action.bulk.BulkRequestBuilder;
-import org.elasticsearch.action.bulk.BulkResponse;
-import org.elasticsearch.action.index.IndexRequestBuilder;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.node.Node;
-import org.elasticsearch.node.NodeBuilder;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
@@ -41,31 +31,15 @@ public class DataGeneration {
 		List<Player> players = readPlayersIn("qualifiers", accounts, games);
 		List<Match> matches = readMatchesIn(games, players);
 
-		try (
-				Node node = NodeBuilder.nodeBuilder().node();
-				Scanner scanner = new Scanner(System.in)) {
-			Client client = node.client();
+		try (Storage storage = new Storage(); Scanner scanner = new Scanner(System.in)) {
+			storage.start();
+			Arrays.asList(games, accounts, players, matches).stream().map(storage::index).forEach(response -> {
+				if (response.hasFailures()) {
+					System.out.println("Failures during index: " + response.buildFailureMessage());
+				}
+			});
 
-			client.admin().indices().delete(new DeleteIndexRequest(Entity.INDEX));
-			client.admin().indices().create(new CreateIndexRequest(Entity.INDEX));
-			client.admin().indices().putMapping(new PutMappingRequest(Entity.INDEX).source(Game.MAPPING));
-			client.admin().indices().putMapping(new PutMappingRequest(Entity.INDEX).source(Account.MAPPING));
-			client.admin().indices().putMapping(new PutMappingRequest(Entity.INDEX).source(Player.MAPPING));
-			client.admin().indices().putMapping(new PutMappingRequest(Entity.INDEX).source(Match.MAPPING));
-
-			BulkRequestBuilder bulkRequest = client.prepareBulk();
-			Function<Entity, IndexRequestBuilder> index = entity -> client.prepareIndex(Entity.INDEX, entity.getType(), entity.getId()).setSource(entity.toJsonString());
-
-			games.stream().map(index).forEach(bulkRequest::add);
-			accounts.stream().map(index).forEach(bulkRequest::add);
-			players.stream().map(index).forEach(bulkRequest::add);
-			matches.stream().map(index).forEach(bulkRequest::add);
-
-			BulkResponse bulkResponse = bulkRequest.execute().actionGet();
-			if (bulkResponse.hasFailures()) {
-				System.out.println("Failures during index: " + bulkResponse.buildFailureMessage());
-			}
-
+			System.out.println("Press enter to stop...");
 			scanner.nextLine();
 		}
 	}

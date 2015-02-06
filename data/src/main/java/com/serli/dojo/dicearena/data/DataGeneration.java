@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -19,8 +20,8 @@ import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.node.Node;
+import org.elasticsearch.node.NodeBuilder;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
@@ -38,19 +39,12 @@ public class DataGeneration {
 		List<Game> games = readGamesIn("games");
 		List<Account> accounts = readAccountsIn("names", "domains", "locations");
 		List<Player> players = readPlayersIn("qualifiers", accounts, games);
+		List<Match> matches = readMatchesIn(games, players);
 
-		List<Match> matches = LongStream.range(1L, FILES_NUMBER * LINES_NUMBER).mapToObj(id -> {
-			LocalDateTime startTime = pickDateTime();
-			Game game = pickIn(games);
-			List<Player> gamePlayers = players.stream().filter(player -> player.game.equals(game)).collect(Collectors.toList());
-
-			Match match = new Match(id, game, startTime, pickDateTimeFrom(startTime, 6));
-			match.scores = pickScoresIn(gamePlayers, match);
-			return match;
-		}).collect(Collectors.toList());
-
-		try (TransportClient transportClient = new TransportClient()) {
-			Client client = transportClient.addTransportAddress(new InetSocketTransportAddress("localhost", 9300));
+		try (
+				Node node = NodeBuilder.nodeBuilder().node();
+				Scanner scanner = new Scanner(System.in)) {
+			Client client = node.client();
 
 			client.admin().indices().delete(new DeleteIndexRequest(Entity.INDEX));
 			client.admin().indices().create(new CreateIndexRequest(Entity.INDEX));
@@ -69,8 +63,10 @@ public class DataGeneration {
 
 			BulkResponse bulkResponse = bulkRequest.execute().actionGet();
 			if (bulkResponse.hasFailures()) {
-				System.out.println("Failures during index");
+				System.out.println("Failures during index: " + bulkResponse.buildFailureMessage());
 			}
+
+			scanner.nextLine();
 		}
 	}
 
@@ -105,16 +101,29 @@ public class DataGeneration {
 		}).flatMap(list -> list.stream()).collect(Collectors.toList());
 	}
 
+	private static List<Match> readMatchesIn(List<Game> games, List<Player> players) {
+		List<Match> matches = LongStream.range(1L, FILES_NUMBER * LINES_NUMBER).mapToObj(id -> {
+			LocalDateTime startTime = pickDateTime();
+			Game game = pickIn(games);
+			List<Player> gamePlayers = players.stream().filter(player -> player.game.equals(game)).collect(Collectors.toList());
+
+			Match match = new Match(id, game, startTime, pickDateTimeFrom(startTime, 6));
+			match.scores = pickScoresIn(gamePlayers, match);
+			return match;
+		}).collect(Collectors.toList());
+		return matches;
+	}
+
+	private static List<String> readIn(String name) throws IOException {
+		return Files.readLines(new File("./src/main/resources/data/" + name + ".txt"), Charsets.UTF_8);
+	}
+
 	private static Player pickPlayer(String qualifier, Account account, List<Game> games) {
 		String name = String.format("%s %s", qualifier.substring(0, 1).toUpperCase() + qualifier.substring(1), account.email.substring(0, 1).toUpperCase() + account.email.substring(1));
 		if (name.contains("@")) {
 			name = name.substring(0, name.indexOf("@"));
 		}
 		return new Player(name, account, pickIn(games));
-	}
-
-	private static List<String> readIn(String name) throws IOException {
-		return Files.readLines(new File("./src/main/resources/data/" + name + ".txt"), Charsets.UTF_8);
 	}
 
 	private static Map<String, Integer> pickScoresIn(List<Player> players, Match match) {

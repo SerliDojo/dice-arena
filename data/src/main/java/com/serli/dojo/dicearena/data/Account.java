@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class Account implements Entity {
 
 	public static final String TYPE = "account";
-	public static final String MAPPING = "{ \"account\": { \"_timestamp\" : { \"enabled\": \"true\", \"store\": \"yes\" }, \"properties\": { \"email\": { \"type\": \"email\" }, \"location\": { \"type\": \"double\" }, \"subscription\": { \"type\": \"date\", \"format\": \"dateOptionalTime\" }, \"players\": { \"type\": \"string\" } } }}";
+	public static final String MAPPING = "{ \"account\": { \"_timestamp\" : { \"enabled\": \"true\", \"store\": \"yes\" }, \"properties\": { \"email\": { \"analyzer\": \"uax_email_url\", \"type\": \"email\" }, \"location\": { \"type\": \"double\" }, \"subscription\": { \"type\": \"date\", \"format\": \"dateOptionalTime\" }, \"players\": { \"analyzer\": \"keyword\", \"type\": \"string\" } } }}";
 
 	public String email, locations;
 	public LocalDate subscription;

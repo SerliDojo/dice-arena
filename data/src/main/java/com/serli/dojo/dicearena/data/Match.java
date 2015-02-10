@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class Match implements Entity {
 
 	public static final String TYPE = "match";
-	public static final String MAPPING = "{ \"match\": { \"properties\": { \"id\": { \"type\": \"string\" }, \"game\": { \"type\": \"string\" }, \"startTime\": { \"type\": \"date\", \"format\": \"dateOptionalTime\" }, \"endTime\": { \"type\": \"date\", \"format\": \"dateOptionalTime\" }, \"winner\": { \"type\": \"string\" }, \"scores\": { \"properties\": { \"player\": { \"type\": \"string\" }, \"score\": { \"type\": \"long\" } } } } }}";
+	public static final String MAPPING = "{ \"match\": { \"_timestamp\" : { \"enabled\": \"true\", \"store\": \"yes\" }, \"properties\": { \"id\": { \"type\": \"string\" }, \"game\": { \"type\": \"string\" }, \"startTime\": { \"type\": \"date\", \"format\": \"dateOptionalTime\" }, \"endTime\": { \"type\": \"date\", \"format\": \"dateOptionalTime\" }, \"winner\": { \"type\": \"string\" }, \"scores\": { \"properties\": { \"player\": { \"type\": \"string\" }, \"score\": { \"type\": \"long\" } } } } }}";
 
 	public Long id;
 	public Game game;

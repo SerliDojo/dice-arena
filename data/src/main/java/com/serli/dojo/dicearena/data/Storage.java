@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
-import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
@@ -23,11 +22,11 @@ public class Storage implements Closeable {
 
 		Client client = node.client();
 		client.admin().indices().delete(new DeleteIndexRequest(Entity.INDEX));
-		client.admin().indices().create(new CreateIndexRequest(Entity.INDEX));
-		client.admin().indices().putMapping(new PutMappingRequest(Entity.INDEX).source(Game.MAPPING));
-		client.admin().indices().putMapping(new PutMappingRequest(Entity.INDEX).source(Account.MAPPING));
-		client.admin().indices().putMapping(new PutMappingRequest(Entity.INDEX).source(Player.MAPPING));
-		client.admin().indices().putMapping(new PutMappingRequest(Entity.INDEX).source(Match.MAPPING));
+		client.admin().indices().create(new CreateIndexRequest(Entity.INDEX)
+				.mapping(Game.TYPE, Game.MAPPING)
+				.mapping(Account.TYPE, Account.MAPPING)
+				.mapping(Player.TYPE, Player.MAPPING)
+				.mapping(Match.TYPE, Match.MAPPING));
 	}
 
 	public BulkResponse index(List<? extends Entity> entities) {

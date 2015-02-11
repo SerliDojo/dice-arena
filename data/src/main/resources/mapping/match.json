@@ -9,7 +9,8 @@
 				"type": "string"
 			},
 			"game": {
-				"type": "string"
+				"type": "string",
+				"analyzer": "lowercasedKeyword"
 			},
 			"startTime": {
 				"type": "date",
@@ -20,12 +21,14 @@
 				"format": "dateOptionalTime"
 			},
 			"winner": {
-				"type": "string"
+				"type": "string",
+				"analyzer": "lowercasedKeyword"
 			},
 			"scores": {
 				"properties": {
 					"player": {
-						"type": "string"
+						"type": "string",
+						"analyzer": "lowercasedKeyword"
 					},
 					"score": {
 						"type": "long"

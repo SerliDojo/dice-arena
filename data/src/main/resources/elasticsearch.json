@@ -14,6 +14,15 @@
 	"index" : {
 		"store" : {
 			"type" : "memory"
+		},
+		"analysis" : {
+			"analyzer" : {
+				"lowercasedKeyword" : {
+					"type" : "custom",
+					"tokenizer" : "keyword",
+					"filter" : "lowercase"
+				}
+			}
 		}
 	}
 }

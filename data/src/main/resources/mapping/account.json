@@ -6,7 +6,8 @@
 		},
 		"properties": {
 			"email": {
-				"type": "string"
+				"type": "string",
+				"analyzer": "lowercasedKeyword"
 			},
 			"location": {
 				"type": "double"
@@ -16,7 +17,8 @@
 				"format": "dateOptionalTime"
 			},
 			"players": {
-				"type": "string"
+				"type": "string",
+				"analyzer": "lowercasedKeyword"
 			}
 		}
 	}

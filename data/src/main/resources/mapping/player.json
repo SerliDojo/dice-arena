@@ -6,13 +6,16 @@
 		},
 		"properties": {
 			"name": {
-				"type": "string"
+				"type": "string",
+				"analyzer": "lowercasedKeyword"
 			},
 			"game": {
-				"type": "string"
+				"type": "string",
+				"analyzer": "lowercasedKeyword"
 			},
 			"account": {
-				"type": "string"
+				"type": "string",
+				"analyzer": "lowercasedKeyword"
 			}
 		}
 	}

@@ -6,7 +6,8 @@
 		},
 		"properties": {
 			"name": {
-				"type": "string"
+				"type": "string",
+				"analyzer": "lowercasedKeyword"
 			},
 			"description": {
 				"type": "string"

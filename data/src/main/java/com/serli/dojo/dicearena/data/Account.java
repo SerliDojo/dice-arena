@@ -34,6 +34,7 @@ public class Account implements Entity {
 
 	@Override
 	public String toJsonString() {
-		return String.format("{ \"email\" : \"%s\", \"location\" : [%s], \"subscription\" : \"%s\" }", email, locations, subscription);
+		return String.format("{ \"_timestamp\": \"%s\", \"email\" : \"%s\", \"location\" : [%s], \"subscription\" : \"%s\" }", 
+				subscription, email, locations, subscription);
 	}
 }

@@ -2,7 +2,9 @@ package com.serli.dojo.dicearena.data;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
@@ -50,6 +52,8 @@ public class Storage implements Closeable {
 	}
 
 	private IndexRequestBuilder prepareIndex(Client client, Entity entity) {
-		return client.prepareIndex(Entity.INDEX, entity.getType(), entity.getId()).setSource(entity.toJsonString());
+		LocalDateTime timestamp = LocalDateTime.of(2014, 1, 1, 0, 0).plusMinutes(new Random().nextInt(365 * 24 * 60));
+		return client.prepareIndex(Entity.INDEX, entity.getType(), entity.getId())
+				.setTimestamp(timestamp.toString()).setSource(entity.toJsonString());
 	}
 }

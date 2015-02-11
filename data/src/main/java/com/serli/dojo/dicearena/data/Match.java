@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public class Match implements Entity {
 
 	public static final String TYPE = "match";
-	public static final String MAPPING = "{ \"match\": { \"_timestamp\" : { \"enabled\": \"true\", \"store\": \"yes\" }, \"properties\": { \"id\": { \"type\": \"string\" }, \"game\": { \"analyzer\": \"keyword\", \"type\": \"string\" }, \"startTime\": { \"type\": \"date\", \"format\": \"dateOptionalTime\" }, \"endTime\": { \"type\": \"date\", \"format\": \"dateOptionalTime\" }, \"winner\": { \"analyzer\": \"keyword\", \"type\": \"string\" }, \"scores\": { \"properties\": { \"player\": { \"analyzer\": \"keyword\", \"type\": \"string\" }, \"score\": { \"type\": \"long\" } } } } }}";
 
 	public Long id;
 	public Game game;

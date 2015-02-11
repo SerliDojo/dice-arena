@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
@@ -19,16 +19,15 @@ public class Storage implements Closeable {
 
 	private Node node = null;
 
-	public void start() {
+	public void start() throws IOException, InterruptedException, ExecutionException {
 		node = NodeBuilder.nodeBuilder().local(true).node();
 
 		Client client = node.client();
-		client.admin().indices().delete(new DeleteIndexRequest(Entity.INDEX));
 		client.admin().indices().create(new CreateIndexRequest(Entity.INDEX)
-				.mapping(Game.TYPE, Game.MAPPING)
-				.mapping(Account.TYPE, Account.MAPPING)
-				.mapping(Player.TYPE, Player.MAPPING)
-				.mapping(Match.TYPE, Match.MAPPING));
+				.mapping(Game.TYPE, Entity.readMapping(Game.TYPE))
+				.mapping(Account.TYPE, Entity.readMapping(Account.TYPE))
+				.mapping(Player.TYPE, Entity.readMapping(Player.TYPE))
+				.mapping(Match.TYPE, Entity.readMapping(Match.TYPE))).get();
 	}
 
 	public BulkResponse index(List<? extends Entity> entities) {

@@ -1,0 +1,37 @@
+{
+	"match": {
+		"_timestamp": {
+			"enabled": "true", 
+			"store": "yes"
+		},
+		"properties": {
+			"id": {
+				"type": "string"
+			},
+			"game": {
+				"type": "string"
+			},
+			"startTime": {
+				"type": "date",
+				"format": "dateOptionalTime"
+			},
+			"endTime": {
+				"type": "date",
+				"format": "dateOptionalTime"
+			},
+			"winner": {
+				"type": "string"
+			},
+			"scores": {
+				"properties": {
+					"player": {
+						"type": "string"
+					},
+					"score": {
+						"type": "long"
+					}
+				}
+			}
+		}
+	}
+}

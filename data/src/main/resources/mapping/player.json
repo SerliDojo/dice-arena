@@ -1,0 +1,19 @@
+{
+	"player": {
+		"_timestamp": {
+			"enabled": "true", 
+			"store": "yes"
+		},
+		"properties": {
+			"name": {
+				"type": "string"
+			},
+			"game": {
+				"type": "string"
+			},
+			"account": {
+				"type": "string"
+			}
+		}
+	}
+}

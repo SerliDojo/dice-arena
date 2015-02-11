@@ -8,7 +8,6 @@ package com.serli.dojo.dicearena.data;
 public class Player implements Entity {
 
 	public static final String TYPE = "player";
-	public static final String MAPPING = "{ \"player\": { \"_timestamp\" : { \"enabled\": \"true\", \"store\": \"yes\" }, \"properties\": { \"name\": { \"analyzer\": \"keyword\", \"type\": \"string\" } \"game\": { \"analyzer\": \"keyword\", \"type\": \"string\" }, \"account\": { \"analyzer\": \"uax_email_url\", \"type\": \"string\" } } }}";
 
 	public String name;
 	public Account account;

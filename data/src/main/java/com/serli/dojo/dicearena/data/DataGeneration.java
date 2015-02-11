@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -25,7 +26,7 @@ public class DataGeneration {
 	private static final int FILES_NUMBER = 1;
 	private static final int LINES_NUMBER = 100;
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
 		List<Game> games = readGamesIn("games");
 		List<Account> accounts = readAccountsIn("names", "domains", "locations");
 		List<Player> players = readPlayersIn("qualifiers", accounts, games);

@@ -1,0 +1,23 @@
+{
+	"account": {
+		"_timestamp": {
+			"enabled": "true", 
+			"store": "yes"
+		},
+		"properties": {
+			"email": {
+				"type": "string"
+			},
+			"location": {
+				"type": "double"
+			},
+			"subscription": {
+				"type": "date",
+				"format": "dateOptionalTime"
+			},
+			"players": {
+				"type": "string"
+			}
+		}
+	}
+}

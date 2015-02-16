@@ -9,8 +9,11 @@ public class Game implements Stat {
 
 	public static final String TYPE = "game";
 
-	public String name, description;
-	public Integer minPlayers, maxPlayers;
+	private String name, description;
+	private Integer minPlayers, maxPlayers;
+
+	public Game() {
+	}
 
 	public Game(String name, Integer minPlayers, Integer maxPlayers, String description) {
 		this.name = name;
@@ -44,4 +47,37 @@ public class Game implements Stat {
 		builder.append(" }");
 		return builder.toString();
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Integer getMinPlayers() {
+		return minPlayers;
+	}
+
+	public void setMinPlayers(Integer minPlayers) {
+		this.minPlayers = minPlayers;
+	}
+
+	public Integer getMaxPlayers() {
+		return maxPlayers;
+	}
+
+	public void setMaxPlayers(Integer maxPlayers) {
+		this.maxPlayers = maxPlayers;
+	}
+
 }

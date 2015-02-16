@@ -2,11 +2,10 @@ package com.serli.dojo.dicearena.stats.service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -14,18 +13,17 @@ import org.elasticsearch.search.sort.SortOrder;
 import com.serli.dojo.dicearena.stats.model.Game;
 import com.serli.dojo.dicearena.stats.model.Match;
 import com.serli.dojo.dicearena.stats.model.Player;
+import com.serli.dojo.dicearena.stats.model.Score;
 import com.serli.dojo.dicearena.stats.model.Stat;
 
 public class ElasticSearchStatsService implements StatsService {
 
 	public static final String INDEX = "arena-stats";
 
-	private String elasticsearchHost;
-	private int elasticsearchPort;
+	private Client client;
 
-	public ElasticSearchStatsService(String elasticsearchHost, int elasticsearchPort) {
-		this.elasticsearchHost = elasticsearchHost;
-		this.elasticsearchPort = elasticsearchPort;
+	public ElasticSearchStatsService(Client client) {
+		this.client = client;
 	}
 
 	public List<Stat> searchStats(String query) {
@@ -50,8 +48,8 @@ public class ElasticSearchStatsService implements StatsService {
 
 	public List<Stat> getStatsForPlayer(Player player, int from) {
 		return getTypeSortedStatsForQuery(QueryBuilders.boolQuery()
-				.should(QueryBuilders.termQuery("scores.player", player.name))
-				.should(QueryBuilders.termQuery("name", player.game)), from);
+				.should(QueryBuilders.termQuery("scores.player", player.getName()))
+				.should(QueryBuilders.termQuery("name", player.getGame())), from);
 	}
 
 	public List<Stat> getStatsForGame(Game game) {
@@ -59,7 +57,7 @@ public class ElasticSearchStatsService implements StatsService {
 	}
 
 	public List<Stat> getStatsForGame(Game game, int from) {
-		return getStatsForQuery(QueryBuilders.matchQuery("game", game.name), from);
+		return getStatsForQuery(QueryBuilders.matchQuery("game", game.getName()), from);
 	}
 
 	public List<Stat> getStatsForMatch(Match match) {
@@ -68,12 +66,11 @@ public class ElasticSearchStatsService implements StatsService {
 
 	public List<Stat> getStatsForMatch(Match match, int from) {
 		return getTypeSortedStatsForQuery(QueryBuilders.boolQuery()
-				.should(QueryBuilders.termQuery("name", match.game))
-				.should(QueryBuilders.termsQuery("name", match.scores.keySet())), from);
+				.should(QueryBuilders.termQuery("name", match.getGame()))
+				.should(QueryBuilders.termsQuery("name", match.getScores().stream().map(Score::getPlayer).collect(Collectors.toList()))), from);
 	}
 
 	private SearchRequestBuilder prepareQuery(QueryBuilder query) {
-		Client client = getClient();
 		return client.prepareSearch("arena-stats").setQuery(query);
 	}
 
@@ -90,11 +87,7 @@ public class ElasticSearchStatsService implements StatsService {
 		return getStatsForRequest(prepareRequest(prepareQuery(query).addSort("_type", SortOrder.ASC), from));
 	}
 
-	private List<Stat> getStatsForRequest(SearchRequestBuilder prepareRequest) {
+	private List<Stat> getStatsForRequest(SearchRequestBuilder request) {
 		return Collections.emptyList();
-	}
-
-	protected Client getClient() {
-		return new TransportClient().addTransportAddress(new InetSocketTransportAddress(elasticsearchHost, elasticsearchPort));
 	}
 }

@@ -9,11 +9,15 @@ public class Player implements Stat {
 
 	public static final String TYPE = "player";
 
-	public String name;
-	public Account account;
-	public Game game;
+	private String name;
+	private String account;
+	private String game;
 
-	public Player(String name, Account account, Game game) {
+	public Player() {
+		super();
+	}
+
+	public Player(String name, String account, String game) {
 		this.name = name;
 		this.account = account;
 		this.game = game;
@@ -31,6 +35,31 @@ public class Player implements Stat {
 
 	@Override
 	public String toJsonString() {
-		return String.format("{ \"name\" : \"%s\", \"game\" : \"%s\", \"account\" : \"%s\" }", name, game.name, account.email);
+		return String.format("{ \"name\" : \"%s\", \"game\" : \"%s\", \"account\" : \"%s\" }", name, game, account);
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	public String getGame() {
+		return game;
+	}
+
+	public void setGame(String game) {
+		this.game = game;
+	}
+
 }

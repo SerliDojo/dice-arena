@@ -20,7 +20,7 @@ public class Storage implements Closeable {
 	private Node node = null;
 
 	public void start() throws IOException, InterruptedException, ExecutionException {
-		node = NodeBuilder.nodeBuilder().local(true).node();
+		node = NodeBuilder.nodeBuilder().node();
 
 		Client client = node.client();
 		client.admin().indices().create(new CreateIndexRequest(Entity.INDEX)

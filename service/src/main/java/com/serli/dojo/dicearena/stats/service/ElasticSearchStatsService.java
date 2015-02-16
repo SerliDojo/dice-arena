@@ -1,6 +1,6 @@
 package com.serli.dojo.dicearena.stats.service;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,8 +8,12 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.SortOrder;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.serli.dojo.dicearena.stats.model.Account;
 import com.serli.dojo.dicearena.stats.model.Game;
 import com.serli.dojo.dicearena.stats.model.Match;
 import com.serli.dojo.dicearena.stats.model.Player;
@@ -21,6 +25,7 @@ public class ElasticSearchStatsService implements StatsService {
 	public static final String INDEX = "arena-stats";
 
 	private Client client;
+	private ObjectMapper mapper = new ObjectMapper().findAndRegisterModules().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 	public ElasticSearchStatsService(Client client) {
 		this.client = client;
@@ -88,6 +93,25 @@ public class ElasticSearchStatsService implements StatsService {
 	}
 
 	private List<Stat> getStatsForRequest(SearchRequestBuilder request) {
-		return Collections.emptyList();
+		return Arrays.asList(request.get().getHits().getHits()).stream().map(this::getStatForHit).collect(Collectors.toList());
+	}
+
+	private Stat getStatForHit(SearchHit hit) {
+		try {
+			switch (hit.getType()) {
+			case Account.TYPE:
+				return mapper.readValue(hit.getSourceAsString(), Account.class);
+			case Player.TYPE:
+				return mapper.readValue(hit.getSourceAsString(), Player.class);
+			case Game.TYPE:
+				return mapper.readValue(hit.getSourceAsString(), Game.class);
+			case Match.TYPE:
+				return mapper.readValue(hit.getSourceAsString(), Match.class);
+			default:
+				return null;
+			}
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

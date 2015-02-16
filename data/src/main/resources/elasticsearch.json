@@ -19,8 +19,7 @@
 			"analyzer" : {
 				"lowercasedKeyword" : {
 					"type" : "custom",
-					"tokenizer" : "keyword",
-					"filter" : "lowercase"
+					"tokenizer" : "keyword"
 				}
 			}
 		}

@@ -31,6 +31,26 @@ public class ElasticSearchStatsService implements StatsService {
 		this.client = client;
 	}
 
+	@Override
+	public Account getAccount(String email) {
+		return getUniqueTypedStatForQuery(Account.TYPE, QueryBuilders.termQuery("email", email), Account.class);
+	}
+
+	@Override
+	public Player getPlayer(String name) {
+		return getUniqueTypedStatForQuery(Player.TYPE, QueryBuilders.termQuery("name", name), Player.class);
+	}
+
+	@Override
+	public Game getGame(String name) {
+		return getUniqueTypedStatForQuery(Game.TYPE, QueryBuilders.termQuery("name", name), Game.class);
+	}
+
+	@Override
+	public Match getMatch(String id) {
+		return getUniqueTypedStatForQuery(Match.TYPE, QueryBuilders.termQuery("id", id), Match.class);
+	}
+
 	public List<Stat> searchStats(String query) {
 		return searchStats(query, 0);
 	}
@@ -82,6 +102,14 @@ public class ElasticSearchStatsService implements StatsService {
 	private SearchRequestBuilder prepareRequest(SearchRequestBuilder searchRequestBuilder, int from) {
 		searchRequestBuilder.addSort("_timestamp", SortOrder.DESC).setSize(6).setFrom(from);
 		return searchRequestBuilder;
+	}
+
+	private <S extends Stat> S getUniqueTypedStatForQuery(String type, QueryBuilder query, Class<S> statClass) {
+		List<Stat> stats = getStatsForRequest(prepareQuery(query));
+		if (stats.size() > 0 && statClass.isInstance(stats.get(0))) {
+			return statClass.cast(stats.get(0));
+		}
+		return null;
 	}
 
 	private List<Stat> getStatsForQuery(QueryBuilder query, int from) {

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="diceArenaApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dice Arena</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/arena.css" rel="stylesheet">
+
+<script type="text/javascript" src="js/angular.js"></script>
+<script type="text/javascript" src="js/angular-resource.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+
+</head>
+
+<body ng-controller="statsCtrl">
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Dice Arena</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="index.html">Boards<span class="sr-only">(current)</span></a>
+                </li>
+                <li><a href="index.html">Games</a>
+                </li>
+                <li><a href="index.html">Players</a>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control search-input" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Go</button>
+            </form>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1>Welcome to the <i>Dice Arena</i></h1>
+
+        <p>Roll your dice and get lucky.</p>
+
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search for players, games or matches...">
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4" ng-repeat="stat in stats">
+	    <er-game ng-show="stat.type=='game'" itemstat="stat"></er-game>
+	    <er-player ng-show="stat.type=='player'" itemstat="stat"></er-player>	   
+	    <er-match ng-show="stat.type=='match'" itemstat="stat"></er-match>		
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-12">
+            <p class="text-center"><a href="#"><span class="glyphicon glyphicon-download" aria-hidden="true"></span> More... <span class="glyphicon glyphicon-download" aria-hidden="true"></span></a></p>
+        </div>
+    </div>
+
+    <hr>
+
+    <footer>
+        <p>Dice Arena | Dojo @ SERLI</p>
+    </footer>
+</div>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

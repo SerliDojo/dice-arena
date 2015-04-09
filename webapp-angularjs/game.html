@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dice Arena - John Doe</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/arena.css" rel="stylesheet">
+
+</head>
+
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Dice Arena</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="index.html">Boards<span class="sr-only">(current)</span></a>
+                </li>
+                <li><a href="index.html">Games</a>
+                </li>
+                <li><a href="index.html">Players</a>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control search-input" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Go</button>
+            </form>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1>Pig</h1>
+
+        <label>Description</label><br/>
+        Each turn, a player repeatedly rolls a dice until either a 1 is rolled or the player decides to "hold".<br/>
+        <br/>
+        <ul>
+            <li>If the player rolls a 1, they score nothing and it becomes the next player's turn.</li>
+            <li>If the player rolls any other number, it is added to their turn total and the player's turn continues.</li>
+            <li>If a player chooses to "hold", their turn total is added to their score, and it becomes the next player's turn.</li>
+        </ul>
+        The first player to score 100 or more points wins.<br/>
+        For example, the first player, Ann, begins a turn with a roll of 5. Ann could hold and score 5 points, but chooses to roll again. Ann rolls a 2, and could hold with a turn total of 7 points, but chooses to roll again. Ann rolls a 1, and must end her turn without scoring. The next player, Bob, rolls the sequence 4-5-3-5-5, after which he chooses to hold, and adds his turn total of 22 points to his score.<br/>
+    </div>
+
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h2><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 20/11/2014</h2>
+
+            <label>Game</label>
+            <p><a href="game.html">Pig</a></p>
+
+            <label>Winner</label>
+            <p><a href="player.html">Bill Smith</a></p>
+
+            <label>Players</label>
+            <p><a href="player.html">John Doe</a>, <a href="player.html">Bill Smith</a>, <a href="player.html">Ben Jackson</a></p>
+
+            <p><a class="btn btn-default" href="match.html" role="button">View details »</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 15/10/2014</h2>
+
+            <label>Game</label>
+            <p><a href="game.html">Pig</a></p>
+
+            <label>Winner</label>
+            <p><a href="player.html">Bill Smith</a></p>
+
+            <label>Players</label>
+            <p><a href="player.html">John Doe</a>, <a href="player.html">James Taylor</a>, <a href="player.html">George Williams</a>, <a href="player.html">Harry Brown</a></p>
+
+            <p><a class="btn btn-default" href="match.html" role="button">View details »</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 03/10/2014</h2>
+
+            <label>Game</label>
+            <p><a href="game.html">Pig</a></p>
+
+            <label>Winner</label>
+            <p><a href="player.html">Harry Brown</a></p>
+
+            <label>Players</label>
+            <p><a href="player.html">George Williams</a>, <a href="player.html">Harry Brown</a></p>
+
+            <p><a class="btn btn-default" href="match.html" role="button">View details »</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 22/09/2014</h2>
+
+            <label>Game</label>
+            <p><a href="game.html">Pig</a></p>
+
+            <label>Winner</label>
+            <p><a href="player.html">Bill Smith</a></p>
+
+            <label>Players</label>
+            <p><a href="player.html">John Doe</a>, <a href="player.html">Bill Smith</a>, <a href="player.html">Ben Jackson</a></p>
+
+            <p><a class="btn btn-default" href="match.html" role="button">View details »</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 07/09/2014</h2>
+
+            <label>Game</label>
+            <p><a href="game.html">Pig</a></p>
+
+            <label>Winner</label>
+            <p><a href="player.html">Harry Brown</a></p>
+
+            <label>Players</label>
+            <p><a href="player.html">George Williams</a>, <a href="player.html">Harry Brown</a></p>
+
+            <p><a class="btn btn-default" href="match.html" role="button">View details »</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 15/08/2014</h2>
+
+            <label>Game</label>
+            <p><a href="game.html">Pig</a></p>
+
+            <label>Winner</label>
+            <p><a href="player.html">Bill Smith</a></p>
+
+            <label>Players</label>
+            <p><a href="player.html">John Doe</a>, <a href="player.html">James Taylor</a>, <a href="player.html">George Williams</a>, <a href="player.html">Harry Brown</a></p>
+
+            <p><a class="btn btn-default" href="match.html" role="button">View details »</a></p>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-12">
+            <p class="text-center"><a href="#"><span class="glyphicon glyphicon-download" aria-hidden="true"></span> More... <span class="glyphicon glyphicon-download" aria-hidden="true"></span></a></p>
+        </div>
+    </div>
+
+    <hr>
+
+    <footer>
+        <p>Dice Arena | Dojo @ SERLI</p>
+    </footer>
+</div>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+</body>
+
+</html>

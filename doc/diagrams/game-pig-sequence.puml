@@ -1,0 +1,29 @@
+@startuml
+
+title Pig Game Sequence Diagram
+
+[*] -down-> Init
+Init : set turn score to 0
+Init -down-> Roll
+Roll : roll the die
+Roll -down-> Add
+Add : add die score\nto turn score
+Add -down-> Hold
+Hold : player choose\nto hold\nadd turn score\nto player's score
+Hold -down-> Win
+Win : player score\nreached 100
+Win -down-> [*]
+
+Roll -left-> Fail
+Fail : scored a 1\nchange player
+Fail -up-> Init
+
+Add -left-> Continue
+Continue : player choose\nto roll again
+Continue -up-> Roll
+
+Hold -right-> Next
+Next : player score\ndidn't reached 100\nchange player
+Next -up-> Init
+
+@enduml

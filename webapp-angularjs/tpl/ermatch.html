@@ -1,0 +1,14 @@
+<h2><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {{itemstat.startTime}}</h2>
+		    <label>Game</label>
+		    <p><a href="game.html">{{itemstat.game}}</a></p>
+
+		    <label>Winner</label>
+		    <p><a href="player.html">{{itemstat.winner}}</a></p>
+
+		    <label>Players</label>
+			
+		    <p>
+			<span ng-repeat="player in itemstat.players">
+				<a href="player.html">{{player}}</a>{{$last?"":", "}}
+			</span>
+		    <p><a class="btn btn-default" href="match.html" role="button">View details »</a></p>

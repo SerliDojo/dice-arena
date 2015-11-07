@@ -1,7 +1,10 @@
 {
 	"node" : {
 		"http" : {
-			"enabled" : "true"
+			"enabled" : "true",
+			"cors" : {
+				"enabled" : "true"
+			}
 		}
 	},
 	"path" : {

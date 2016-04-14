@@ -1,0 +1,24 @@
+@startuml
+participant Player1
+participant Player2
+participant Admin
+
+Player1 -> Engine: Register
+Player2 -> Engine: Register
+
+Admin -> Engine: Create
+Engine --> Player1: Check
+Engine --> Player2: Check
+
+Admin -> Engine: Launch
+Engine --> Engine: Init
+loop
+  Engine -> Player1: Ask
+  Player1 -> Engine: Decision
+  Engine --> Engine: Step
+  Engine -> Player2: Ask
+  Player2 -> Engine: Decision
+  Engine --> Engine: Step
+end
+
+@enduml

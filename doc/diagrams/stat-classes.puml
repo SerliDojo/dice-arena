@@ -1,6 +1,6 @@
 @startuml
 
-title Class diagram
+title Stat Class Diagram
 
 class Account
 class Player
@@ -13,6 +13,7 @@ class Friendly
 
 Account "1" -down- "*" Player
 Game "1" -down- "*" Match
+Player "*" -up- "1" Game
 Match "*" -left- "1..*" Player
 Game "1" -right- "*" Tournament
 Tournament <|-down- Cup

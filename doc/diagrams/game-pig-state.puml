@@ -1,6 +1,6 @@
 @startuml
 
-title Pig Game Sequence Diagram
+title Pig Game State Diagram
 
 [*] -down-> Init
 Init : set turn score to 0

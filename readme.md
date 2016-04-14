@@ -4,7 +4,7 @@ Dice Arena
 Dice Arena est un projet de découverte.
 Son objectif principal est de permettre aux participants de prendre connaissance de technologies, de pratiques ou d'outils divers et variés.
 
-Il se compose de nombreuses facettes pour permettre d'avoir un sujet à chaque nouvel exercice.
+Il se compose de nombreux modules pour permettre d'avoir un sujet à chaque nouvel exercice.
 Aussi, ce projet se veut ouvert et s'étend au fur et à mesure des technologies couvertes.
 
 Sujet

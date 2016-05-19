@@ -1,21 +1,27 @@
 package com.serli.dojo.arena.dice.pig;
 
-public class PigTurnState {
+import com.serli.dojo.arena.dice.Die;
+
+public class PigTurn {
 
 	public final PigPlayer player;
 	public final Integer turnScore;
 	public final Integer turnCount;
 	public final Integer dieScore;
 
-	public PigTurnState(PigPlayer player, Integer turnScore, Integer turnCount, Integer dieScore) {
+	public static PigTurn playing(PigPlayer player) {
+		return new PigTurn(player, 0, 1, Die.roll());
+	}
+	
+	public PigTurn scoring() {
+		return new PigTurn(player, turnScore + dieScore, turnCount + 1, Die.roll());
+	}
+
+	private PigTurn(PigPlayer player, Integer turnScore, Integer turnCount, Integer dieScore) {
 		this.player = player;
 		this.turnScore = turnScore;
 		this.turnCount = turnCount;
 		this.dieScore = dieScore;
-	}
-
-	public PigTurnState(final PigPlayer player, final Integer dieScore) {
-		this(player, 0, 1, dieScore);
 	}
 
 	@Override

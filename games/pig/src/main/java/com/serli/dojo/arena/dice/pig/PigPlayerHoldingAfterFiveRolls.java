@@ -1,17 +1,13 @@
 package com.serli.dojo.arena.dice.pig;
 
-public class PigPlayerHoldingAfterFiveRolls extends PigPlayer {
+public class PigPlayerHoldingAfterFiveRolls extends PigPlayerRollingUntil {
 
 	public PigPlayerHoldingAfterFiveRolls(String name) {
 		super(name);
 	}
 
 	@Override
-	public PigGameAction play(PigGameState state) {
-		if (state.turnState.turnCount < 5) {
-			return PigGameAction.ROLL;
-		}
-		return PigGameAction.HOLD;
+	protected boolean shouldHold(PigState state) {
+		return state.turn.turnCount >= 5;
 	}
-
 }

@@ -1,6 +1,8 @@
 package com.serli.dojo.arena.dice.pig;
 
-public abstract class PigPlayer {
+import com.serli.dojo.arena.dice.Player;
+
+public abstract class PigPlayer implements Player<PigAction, PigState> {
 
 	public final String name;
 
@@ -8,5 +10,11 @@ public abstract class PigPlayer {
 		this.name = name;
 	}
 
-	public abstract PigGameAction play(PigGameState state);
+	@Override
+	public abstract PigAction play(PigState state);
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }

@@ -16,14 +16,33 @@ import java.util.stream.Stream;
 
 public enum PokerHand {
 
-	HIGH_DIE(1, 1), ONE_PAIR(2, 1), TWO_PAIRS(2, 2), THREE_OF_A_KIND(3, 1), FOUR_OF_A_KIND(4, 1), 
+	HIGH_DIE(
+			dice -> true,
+			dice -> stream(dice.dice).max(Comparator.<Integer> naturalOrder()).orElse(0)
+	), 
+	ONE_PAIR(
+			dice -> sidesAsManyAs(dice, 2).count() >= 1,
+			dice -> 10
+	), 
+	TWO_PAIRS(
+			dice -> sidesAsManyAs(dice, 2).count() >= 2,
+			dice -> 20
+	), 
+	THREE_OF_A_KIND(
+			dice -> sidesAsManyAs(dice, 3).count() >= 1,
+			dice -> 30
+	), 
+	FOUR_OF_A_KIND(
+			dice -> sidesAsManyAs(dice, 4).count() >= 1,
+			dice -> 50
+	), 
 	FULL_HOUSE(
-			ONE_PAIR.apply.and(THREE_OF_A_KIND.apply),
+			TWO_PAIRS.apply.and(THREE_OF_A_KIND.apply),
 			dice -> ONE_PAIR.score.apply(dice) + THREE_OF_A_KIND.score.apply(dice)
 	), 
 	STRAIGHT(
 			dice -> stream(dice.dice).distinct().count() == 5 && (!asList(dice.dice).contains(1) || !asList(dice.dice).contains(6)),
-			dice -> stream(dice.dice).reduce(0, (a, i) -> a + i * 5)
+			dice -> asList(dice.dice).contains(1) ? 60 : 70
 	);
 
 	final Predicate<PokerDice> apply;
@@ -59,7 +78,7 @@ public enum PokerHand {
 		return stream(dice.dice)
 				.collect(groupingBy(identity(), counting()))
 				.entrySet().stream()
-				.filter(entry -> entry.getValue() == count)
+				.filter(entry -> entry.getValue() >= count)
 				.sorted(BY_VALUE_DESC.thenComparing(BY_KEY_DESC));
 	}
 }

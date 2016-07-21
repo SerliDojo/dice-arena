@@ -8,9 +8,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.serli.dojo.arena.dice.Engine;
+import com.serli.dojo.arena.dice.Game;
 
-public class PigEngine implements Engine<PigAction, PigState, PigPlayer> {
+public class PigEngine implements Game<PigAction, PigState, PigPlayer> {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(PigEngine.class);
 

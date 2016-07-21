@@ -5,9 +5,9 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import com.serli.dojo.arena.dice.State;
+import com.serli.dojo.arena.dice.Match;
 
-public class PigState implements State {
+public class PigState implements Match {
 
 	public final LinkedHashMap<PigPlayer, Integer> scores;
 	public final PigTurn turn;

@@ -1,7 +1,7 @@
 package com.serli.dojo.arena.dice;
 
-public interface Player<A extends Action, S extends State> {
+public interface Player<A extends Action, M extends Match> {
 
-	A play(S state);
+	A play(M match);
 
 }

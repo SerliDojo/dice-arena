@@ -8,9 +8,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.serli.dojo.arena.dice.Engine;
+import com.serli.dojo.arena.dice.Game;
 
-public class PokerEngine implements Engine<PokerAction, PokerState, PokerPlayer> {
+public class PokerEngine implements Game<PokerAction, PokerState, PokerPlayer> {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(PokerEngine.class);
 

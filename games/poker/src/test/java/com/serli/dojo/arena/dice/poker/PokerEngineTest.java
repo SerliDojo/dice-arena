@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.serli.dojo.arena.dice.Match;
+import com.serli.dojo.arena.dice.Dealer;
 
 public class PokerEngineTest {
 
@@ -18,7 +18,7 @@ public class PokerEngineTest {
 				new PokerPlayerHoldingOverOnePair("Gary"));
 		PokerEngine engine = new PokerEngine();
 
-		PokerState state = Match.play(engine, players);
+		PokerState state = Dealer.play(engine, players);
 
 		Assert.assertNotNull(state);
 		Assert.assertNotNull(state.scores);

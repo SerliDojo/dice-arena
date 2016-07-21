@@ -5,9 +5,9 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import com.serli.dojo.arena.dice.State;
+import com.serli.dojo.arena.dice.Match;
 
-public class PokerState implements State {
+public class PokerState implements Match {
 
 	public final LinkedHashMap<PokerPlayer, Integer> scores;
 	public final PokerTurn turn;

@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.serli.dojo.arena.dice.Match;
+import com.serli.dojo.arena.dice.Dealer;
 
 public class PigEngineTest {
 
@@ -18,7 +18,7 @@ public class PigEngineTest {
 				new PigPlayerHoldingAfterFiveRolls("Gary"));
 		PigEngine engine = new PigEngine();
 
-		PigState state = Match.play(engine, players);
+		PigState state = Dealer.play(engine, players);
 
 		Assert.assertNotNull(state);
 		Assert.assertNotNull(state.scores);

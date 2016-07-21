@@ -1,24 +1,40 @@
 @startuml
+participant Admin
 participant Player1
 participant Player2
-participant Admin
+participant Dealer
+participant Game
 
-Player1 -> Engine: Register
-Player2 -> Engine: Register
+Player1 -> Dealer: Register
+Dealer --> Player1: Ok
+Player2 -> Dealer: Register
+Dealer --> Player2: Ok
 
-Admin -> Engine: Create
-Engine --> Player1: Check
-Engine --> Player2: Check
+Admin -> Dealer: Launch(Player1, Player2)
+Dealer -> Player1: Check
+Player1 --> Dealer: Ok
+Dealer -> Player2: Check
+Player2 --> Dealer: Ok
+Dealer --> Admin: Ok
 
-Admin -> Engine: Launch
-Engine --> Engine: Init
+Dealer -> Game: Init
+Game --> Dealer: Match
+
 loop
-  Engine -> Player1: Ask
-  Player1 -> Engine: Decision
-  Engine --> Engine: Step
-  Engine -> Player2: Ask
-  Player2 -> Engine: Decision
-  Engine --> Engine: Step
+  Dealer -> Player1: Play(Match)
+  Player1 --> Dealer: Action
+  Dealer -> Game: Apply(Action, Match)
+  Game --> Dealer: Match
+
+  Dealer -> Player2: Play(Match)
+  Player2 --> Dealer: Action
+  Dealer -> Game: Apply(Action, Match)
+  Game --> Dealer: Match
 end
+
+Dealer -> Player1: Notify
+Player1 --> Dealer: Ok
+Dealer -> Player2: Notify
+Player2 --> Dealer: Ok
 
 @enduml

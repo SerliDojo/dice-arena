@@ -1,0 +1,23 @@
+@startuml
+
+title Stat Class Diagram
+
+class Account
+class Player
+class Game
+class Match
+class Tournament
+class Cup
+class Championship
+class Friendly
+
+Account "1" -down- "*" Player
+Game "1" -down- "*" Match
+Player "*" -up- "1" Game
+Match "*" -left- "1..*" Player
+Game "1" -right- "*" Tournament
+Tournament <|-down- Cup
+Tournament <|-down- Championship
+Tournament <|-down- Friendly
+
+@enduml

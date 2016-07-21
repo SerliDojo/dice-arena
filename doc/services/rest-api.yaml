@@ -1,0 +1,116 @@
+swagger: '2.0'
+info:
+  title: SERLI Dojo's Dice Arena API
+  description: API designed to interact with the SERLI Dojo's Dice Arena
+  version: "1.0.0"
+
+host: dojo.serli.com
+schemes:
+  - https
+basePath: /arena/v1
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /games:
+    get:
+      summary: Available games
+      description : List all games playable at the arena
+      responses:
+        200:
+          description: An array of games
+          schema:
+            $ref: '#/definitions/Game'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /matches:
+    get:
+      summary: Available games
+      description : List all games playable at the arena
+      responses:
+        200:
+          description: An array of games
+          schema:
+            $ref: '#/definitions/Game'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /accounts:
+    post:
+      summary: Register a new account
+      description : Register a new account
+      responses:
+        200:
+          description: Registered account
+          schema:
+            $ref: '#/definitions/Game'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      summary: Update an account
+      description : Update an account
+      responses:
+        200:
+          description: Updated account
+          schema:
+            $ref: '#/definitions/Game'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    get:
+      summary: Registered accounts
+      description : List all accounts that are registered at the arena
+      responses:
+        200:
+          description: An array of accounts
+          schema:
+            $ref: '#/definitions/Game'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Game:
+    type: object
+    properties:
+      offset:
+        type: integer
+        format: int32
+        description: Position in pagination.
+      limit:
+        type: integer
+        format: int32
+        description: Number of items to retrieve (100 max).
+      count:
+        type: integer
+        format: int32
+        description: Total number of items available.
+  Account:
+    type: object
+    properties:
+      email:
+        type: string
+        format:  
+        description: User's email which acts as an account id.
+      players:
+        type: array
+        format:  
+        description: Players registered by the user.
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string

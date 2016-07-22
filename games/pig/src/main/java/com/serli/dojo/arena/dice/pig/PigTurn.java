@@ -26,6 +26,6 @@ public class PigTurn {
 
 	@Override
 	public String toString() {
-		return String.format("%s currently holds %d points at turn %d and rolled %d", player.name, turnScore, turnCount, dieScore);
+		return String.format("%s currently holds %d points at turn %d and rolled %d", player.name(), turnScore, turnCount, dieScore);
 	}
 }

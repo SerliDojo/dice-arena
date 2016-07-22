@@ -4,10 +4,15 @@ import com.serli.dojo.arena.dice.Player;
 
 public abstract class PigPlayer implements Player<PigAction, PigMatch> {
 
-	public final String name;
+	private final String name;
 
 	public PigPlayer(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String name() {
+		return name;
 	}
 
 	@Override

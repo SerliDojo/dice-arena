@@ -23,26 +23,20 @@ public class PokerGame implements Game<PokerAction, PokerMatch, PokerPlayer> {
 	}
 
 	@Override
-	public boolean isFinished(PokerMatch match) {
-		return match.scores.values().stream().filter(score -> score >= 100).findAny().isPresent();
-	}
+	public PokerMatch apply(final PokerAction action, final PokerMatch match) {
+		PokerMatch nextMatch = match;
 
-	@Override
-	public PokerMatch step(final PokerMatch match) {
 		final LinkedHashMap<PokerPlayer, Integer> scores = match.scores;
 		final PokerTurn turn = match.turn;
 
-		LOGGER.info("{} rolled {}", turn.player.name, turn.dice);
+		LOGGER.info("{} rolled {} and choose to {}", turn.player.name(), turn.dice, action);
 
-		PokerMatch nextMatch = match;
 		int totalScore = PokerHand.bestScore(turn.dice);
-		PokerAction action = null;
-		if(turn.turnCount<= 2 && (action = turn.player.play(match)).diceIndex.isPresent()) {
-			LOGGER.info("{} choose to {}", turn.player.name, action);
-			LOGGER.info("{} continues with {} points", turn.player.name, totalScore);
+		if(turn.turnCount<= 2 && action.diceIndex.isPresent()) {
+			LOGGER.info("{} continues with {} points", turn.player.name(), totalScore);
 			nextMatch = new PokerMatch(scores, turn.rolling(action.diceIndex.get()));
 		} else {
-			LOGGER.info("{} scores {} points", turn.player.name, totalScore);
+			LOGGER.info("{} scores {} points", turn.player.name(), totalScore);
 			scores.put(turn.player, scores.get(turn.player) + totalScore);
 			nextMatch = new PokerMatch(scores, PokerTurn.playing(getNextPlayer(turn.player, scores.keySet())));
 		}

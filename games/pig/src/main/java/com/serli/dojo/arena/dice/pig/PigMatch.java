@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import com.serli.dojo.arena.dice.Match;
 
-public class PigMatch implements Match {
+public class PigMatch implements Match<PigAction> {
 
 	public final LinkedHashMap<PigPlayer, Integer> scores;
 	public final PigTurn turn;
@@ -23,6 +23,11 @@ public class PigMatch implements Match {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
+	public PigPlayer currentPlayer() {
+		return turn.player;
+	}
+
 	public boolean isFinished() {
 		return scores.values().stream().filter(score -> score >= 100).findAny().isPresent();
 	}
@@ -33,6 +38,6 @@ public class PigMatch implements Match {
 
 	@Override
 	public String toString() {
-		return String.format("current scores: %s, current turn state: %s", scores, turn);
+		return String.format("Scores: %s, Turn: %s", scores, turn);
 	}
 }

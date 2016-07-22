@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import com.serli.dojo.arena.dice.Match;
 
-public class PokerMatch implements Match {
+public class PokerMatch implements Match<PokerAction> {
 
 	public final LinkedHashMap<PokerPlayer, Integer> scores;
 	public final PokerTurn turn;
@@ -23,6 +23,12 @@ public class PokerMatch implements Match {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
+	public PokerPlayer currentPlayer() {
+		return turn.player;
+	}
+
+	@Override
 	public boolean isFinished() {
 		return scores.values().stream().filter(score -> score >= 100).findAny().isPresent();
 	}
@@ -33,6 +39,6 @@ public class PokerMatch implements Match {
 
 	@Override
 	public String toString() {
-		return String.format("current scores: %s, current turn state: %s", scores, turn);
+		return String.format("Scores: %s, Turn: %s", scores, turn);
 	}
 }

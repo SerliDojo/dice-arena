@@ -22,6 +22,6 @@ public class PokerTurn {
 
 	@Override
 	public String toString() {
-		return String.format("%s currently rolled %s at turn %d", player.name, dice, turnCount);
+		return String.format("%s currently rolled %s at turn %d", player.name(), dice, turnCount);
 	}
 }

@@ -23,38 +23,30 @@ public class PigGame implements Game<PigAction, PigMatch, PigPlayer> {
 	}
 
 	@Override
-	public boolean isFinished(PigMatch match) {
-		return match.scores.values().stream().filter(score -> score >= 100).findAny().isPresent();
-	}
+	public PigMatch apply(PigAction action, PigMatch match) {
+		PigMatch nextMatch = match;
 
-	@Override
-	public PigMatch step(final PigMatch match) {
 		final LinkedHashMap<PigPlayer, Integer> scores = match.scores;
 		final PigTurn turn = match.turn;
 
-		LOGGER.info("{} rolled a {}", turn.player.name, turn.dieScore);
-
-		PigMatch nextMatch = match;
+		LOGGER.info("{} rolled a {} and choose to {}", turn.player.name(), turn.dieScore, action);
 		if (turn.dieScore == 1) {
 			LOGGER.info("Too bad, next player");
 			nextMatch = new PigMatch(scores, PigTurn.playing(getNextPlayer(turn.player, scores.keySet())));
 		} else {
-			PigAction action = turn.player.play(match);
-			LOGGER.info("{} choose to {}", turn.player.name, action);
-
 			int totalScore = turn.turnScore + turn.dieScore;
 			switch(action) {
 			case ROLL:
-				LOGGER.info("{} continues with {} points", turn.player.name, totalScore);
+				LOGGER.info("{} continues with {} points", turn.player.name(), totalScore);
 				nextMatch = new PigMatch(scores, turn.scoring());
 				break;
 			case HOLD:
-				LOGGER.info("{} scores {} points", turn.player.name, totalScore);
+				LOGGER.info("{} scores {} points", turn.player.name(), totalScore);
 				scores.put(turn.player, scores.get(turn.player) + totalScore);
 				nextMatch = new PigMatch(scores, PigTurn.playing(getNextPlayer(turn.player, scores.keySet())));
 				break;
 			default:
-				LOGGER.info("{}'s choice not understood", turn.player.name, totalScore);
+				LOGGER.info("{}'s choice not understood", turn.player.name(), totalScore);
 				nextMatch = new PigMatch(scores, PigTurn.playing(getNextPlayer(turn.player, scores.keySet())));
 			}
 		}

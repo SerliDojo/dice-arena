@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.serli.dojo.arena.dice.Dealer;
 
-public class PigEngineTest {
+public class PigGameTest {
 
 	@Test
 	public void testRun() {
@@ -16,13 +16,13 @@ public class PigEngineTest {
 				new PigPlayerHolding("John"),
 				new PigPlayerHoldingAfterFifteenPointsEarned("Bill"),
 				new PigPlayerHoldingAfterFiveRolls("Gary"));
-		PigEngine engine = new PigEngine();
+		PigGame game = new PigGame();
 
-		PigState state = Dealer.play(engine, players);
+		PigMatch match = Dealer.play(game, players);
 
-		Assert.assertNotNull(state);
-		Assert.assertNotNull(state.scores);
-		Assert.assertEquals(state.scores.size(), 3);
-		Assert.assertTrue(state.scores.values().stream().anyMatch(v -> v >= 100));
+		Assert.assertNotNull(match);
+		Assert.assertNotNull(match.scores);
+		Assert.assertEquals(match.scores.size(), 3);
+		Assert.assertTrue(match.scores.values().stream().anyMatch(v -> v >= 100));
 	}
 }

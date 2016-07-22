@@ -1,4 +1,4 @@
-package com.serli.dojo.arena.dice.poker;
+package com.serli.dojo.arena.dice.pig;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -7,17 +7,17 @@ import java.util.stream.Collectors;
 
 import com.serli.dojo.arena.dice.Match;
 
-public class PokerState implements Match {
+public class PigMatch implements Match {
 
-	public final LinkedHashMap<PokerPlayer, Integer> scores;
-	public final PokerTurn turn;
+	public final LinkedHashMap<PigPlayer, Integer> scores;
+	public final PigTurn turn;
 
-	public PokerState(final LinkedHashMap<PokerPlayer, Integer> scoreTable, final PokerTurn turnState) {
+	public PigMatch(final LinkedHashMap<PigPlayer, Integer> scoreTable, final PigTurn turnState) {
 		this.scores = scoreTable;
 		this.turn = turnState;
 	}
 
-	public PokerState(final LinkedHashMap<PokerPlayer, Integer> scoreTable) {
+	public PigMatch(final LinkedHashMap<PigPlayer, Integer> scoreTable) {
 		this.scores = scoreTable;
 		this.turn = null;
 	}
@@ -27,7 +27,7 @@ public class PokerState implements Match {
 		return scores.values().stream().filter(score -> score >= 100).findAny().isPresent();
 	}
 
-	public Collection<PokerPlayer> getWinners() {
+	public Collection<PigPlayer> getWinners() {
 		return scores.entrySet().stream().filter(entry -> entry.getValue() >= 100).map(Entry::getKey).collect(Collectors.toSet());
 	}
 

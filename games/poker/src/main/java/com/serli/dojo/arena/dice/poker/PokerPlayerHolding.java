@@ -7,7 +7,7 @@ public class PokerPlayerHolding extends PokerPlayer {
 	}
 
 	@Override
-	public PokerAction play(PokerState state) {
+	public PokerAction play(PokerMatch match) {
 		return PokerAction.hold();
 	}
 

@@ -7,7 +7,7 @@ public class PigPlayerHoldingAfterFiveRolls extends PigPlayerRollingUntil {
 	}
 
 	@Override
-	protected boolean shouldHold(PigState state) {
-		return state.turn.turnCount >= 5;
+	protected boolean shouldHold(PigMatch match) {
+		return match.turn.turnCount >= 5;
 	}
 }

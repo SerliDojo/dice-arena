@@ -2,7 +2,7 @@ package com.serli.dojo.arena.dice.poker;
 
 import com.serli.dojo.arena.dice.Player;
 
-public abstract class PokerPlayer implements Player<PokerAction, PokerState> {
+public abstract class PokerPlayer implements Player<PokerAction, PokerMatch> {
 
 	public final String name;
 
@@ -11,7 +11,7 @@ public abstract class PokerPlayer implements Player<PokerAction, PokerState> {
 	}
 
 	@Override
-	public abstract PokerAction play(PokerState state);
+	public abstract PokerAction play(PokerMatch match);
 
 	@Override
 	public String toString() {

@@ -7,7 +7,7 @@ public class PigPlayerHolding extends PigPlayer {
 	}
 
 	@Override
-	public PigAction play(PigState state) {
+	public PigAction play(PigMatch match) {
 		return PigAction.HOLD;
 	}
 

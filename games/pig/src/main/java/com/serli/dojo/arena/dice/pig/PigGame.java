@@ -10,56 +10,56 @@ import org.slf4j.LoggerFactory;
 
 import com.serli.dojo.arena.dice.Game;
 
-public class PigEngine implements Game<PigAction, PigState, PigPlayer> {
+public class PigGame implements Game<PigAction, PigMatch, PigPlayer> {
 
-	public static final Logger LOGGER = LoggerFactory.getLogger(PigEngine.class);
+	public static final Logger LOGGER = LoggerFactory.getLogger(PigGame.class);
 
 	@Override
-	public PigState init(List<PigPlayer> players) {
+	public PigMatch init(List<PigPlayer> players) {
 		LinkedHashMap<PigPlayer, Integer> scoreTable = new LinkedHashMap<>();
 		players.forEach(player -> scoreTable.put(player, 0));
-		PigTurn turnState = PigTurn.playing(getNextPlayer(null, players));
-		return new PigState(scoreTable, turnState);
+		PigTurn turn = PigTurn.playing(getNextPlayer(null, players));
+		return new PigMatch(scoreTable, turn);
 	}
 
 	@Override
-	public boolean isFinished(PigState state) {
-		return state.scores.values().stream().filter(score -> score >= 100).findAny().isPresent();
+	public boolean isFinished(PigMatch match) {
+		return match.scores.values().stream().filter(score -> score >= 100).findAny().isPresent();
 	}
 
 	@Override
-	public PigState step(final PigState state) {
-		final LinkedHashMap<PigPlayer, Integer> scores = state.scores;
-		final PigTurn turn = state.turn;
+	public PigMatch step(final PigMatch match) {
+		final LinkedHashMap<PigPlayer, Integer> scores = match.scores;
+		final PigTurn turn = match.turn;
 
 		LOGGER.info("{} rolled a {}", turn.player.name, turn.dieScore);
 
-		PigState nextState = state;
+		PigMatch nextMatch = match;
 		if (turn.dieScore == 1) {
 			LOGGER.info("Too bad, next player");
-			nextState = new PigState(scores, PigTurn.playing(getNextPlayer(turn.player, scores.keySet())));
+			nextMatch = new PigMatch(scores, PigTurn.playing(getNextPlayer(turn.player, scores.keySet())));
 		} else {
-			PigAction action = turn.player.play(state);
+			PigAction action = turn.player.play(match);
 			LOGGER.info("{} choose to {}", turn.player.name, action);
 
 			int totalScore = turn.turnScore + turn.dieScore;
 			switch(action) {
 			case ROLL:
 				LOGGER.info("{} continues with {} points", turn.player.name, totalScore);
-				nextState = new PigState(scores, turn.scoring());
+				nextMatch = new PigMatch(scores, turn.scoring());
 				break;
 			case HOLD:
 				LOGGER.info("{} scores {} points", turn.player.name, totalScore);
 				scores.put(turn.player, scores.get(turn.player) + totalScore);
-				nextState = new PigState(scores, PigTurn.playing(getNextPlayer(turn.player, scores.keySet())));
+				nextMatch = new PigMatch(scores, PigTurn.playing(getNextPlayer(turn.player, scores.keySet())));
 				break;
 			default:
 				LOGGER.info("{}'s choice not understood", turn.player.name, totalScore);
-				nextState = new PigState(scores, PigTurn.playing(getNextPlayer(turn.player, scores.keySet())));
+				nextMatch = new PigMatch(scores, PigTurn.playing(getNextPlayer(turn.player, scores.keySet())));
 			}
 		}
 
-		return nextState;
+		return nextMatch;
 	}
 
 	private PigPlayer getNextPlayer(PigPlayer player, Collection<PigPlayer> players) {

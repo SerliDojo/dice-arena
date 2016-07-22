@@ -2,7 +2,7 @@ package com.serli.dojo.arena.dice.pig;
 
 import com.serli.dojo.arena.dice.Player;
 
-public abstract class PigPlayer implements Player<PigAction, PigState> {
+public abstract class PigPlayer implements Player<PigAction, PigMatch> {
 
 	public final String name;
 
@@ -11,7 +11,7 @@ public abstract class PigPlayer implements Player<PigAction, PigState> {
 	}
 
 	@Override
-	public abstract PigAction play(PigState state);
+	public abstract PigAction play(PigMatch match);
 
 	@Override
 	public String toString() {

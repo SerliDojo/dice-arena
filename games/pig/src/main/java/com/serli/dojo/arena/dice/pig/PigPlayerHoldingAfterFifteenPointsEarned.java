@@ -7,8 +7,8 @@ public class PigPlayerHoldingAfterFifteenPointsEarned extends PigPlayerRollingUn
 	}
 
 	@Override
-	protected boolean shouldHold(PigState state) {
-		return state.turn.turnScore + state.turn.dieScore >= 15;
+	protected boolean shouldHold(PigMatch match) {
+		return match.turn.turnScore + match.turn.dieScore >= 15;
 	}
 
 }

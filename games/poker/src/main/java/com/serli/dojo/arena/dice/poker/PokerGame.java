@@ -10,44 +10,44 @@ import org.slf4j.LoggerFactory;
 
 import com.serli.dojo.arena.dice.Game;
 
-public class PokerEngine implements Game<PokerAction, PokerState, PokerPlayer> {
+public class PokerGame implements Game<PokerAction, PokerMatch, PokerPlayer> {
 
-	public static final Logger LOGGER = LoggerFactory.getLogger(PokerEngine.class);
+	public static final Logger LOGGER = LoggerFactory.getLogger(PokerGame.class);
 
 	@Override
-	public PokerState init(List<PokerPlayer> players) {
+	public PokerMatch init(List<PokerPlayer> players) {
 		LinkedHashMap<PokerPlayer, Integer> scoreTable = new LinkedHashMap<>();
 		players.forEach(player -> scoreTable.put(player, 0));
-		PokerTurn turnState = PokerTurn.playing(getNextPlayer(null, players));
-		return new PokerState(scoreTable, turnState);
+		PokerTurn turn = PokerTurn.playing(getNextPlayer(null, players));
+		return new PokerMatch(scoreTable, turn);
 	}
 
 	@Override
-	public boolean isFinished(PokerState state) {
-		return state.scores.values().stream().filter(score -> score >= 100).findAny().isPresent();
+	public boolean isFinished(PokerMatch match) {
+		return match.scores.values().stream().filter(score -> score >= 100).findAny().isPresent();
 	}
 
 	@Override
-	public PokerState step(final PokerState state) {
-		final LinkedHashMap<PokerPlayer, Integer> scores = state.scores;
-		final PokerTurn turn = state.turn;
+	public PokerMatch step(final PokerMatch match) {
+		final LinkedHashMap<PokerPlayer, Integer> scores = match.scores;
+		final PokerTurn turn = match.turn;
 
 		LOGGER.info("{} rolled {}", turn.player.name, turn.dice);
 
-		PokerState nextState = state;
+		PokerMatch nextMatch = match;
 		int totalScore = PokerHand.bestScore(turn.dice);
 		PokerAction action = null;
-		if(turn.turnCount<= 2 && (action = turn.player.play(state)).diceIndex.isPresent()) {
+		if(turn.turnCount<= 2 && (action = turn.player.play(match)).diceIndex.isPresent()) {
 			LOGGER.info("{} choose to {}", turn.player.name, action);
 			LOGGER.info("{} continues with {} points", turn.player.name, totalScore);
-			nextState = new PokerState(scores, turn.rolling(action.diceIndex.get()));
+			nextMatch = new PokerMatch(scores, turn.rolling(action.diceIndex.get()));
 		} else {
 			LOGGER.info("{} scores {} points", turn.player.name, totalScore);
 			scores.put(turn.player, scores.get(turn.player) + totalScore);
-			nextState = new PokerState(scores, PokerTurn.playing(getNextPlayer(turn.player, scores.keySet())));
+			nextMatch = new PokerMatch(scores, PokerTurn.playing(getNextPlayer(turn.player, scores.keySet())));
 		}
 
-		return nextState;
+		return nextMatch;
 	}
 
 	private PokerPlayer getNextPlayer(PokerPlayer player, Collection<PokerPlayer> players) {

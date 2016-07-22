@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.serli.dojo.arena.dice.Dealer;
 
-public class PokerEngineTest {
+public class PokerGameTest {
 
 	@Test
 	public void testRun() {
@@ -16,13 +16,13 @@ public class PokerEngineTest {
 				new PokerPlayerHolding("John"),
 				new PokerPlayerRolling("Bill"),
 				new PokerPlayerHoldingOverOnePair("Gary"));
-		PokerEngine engine = new PokerEngine();
+		PokerGame game = new PokerGame();
 
-		PokerState state = Dealer.play(engine, players);
+		PokerMatch match = Dealer.play(game, players);
 
-		Assert.assertNotNull(state);
-		Assert.assertNotNull(state.scores);
-		Assert.assertEquals(state.scores.size(), 3);
-		Assert.assertTrue(state.scores.values().stream().anyMatch(v -> v >= 100));
+		Assert.assertNotNull(match);
+		Assert.assertNotNull(match.scores);
+		Assert.assertEquals(match.scores.size(), 3);
+		Assert.assertTrue(match.scores.values().stream().anyMatch(v -> v >= 100));
 	}
 }

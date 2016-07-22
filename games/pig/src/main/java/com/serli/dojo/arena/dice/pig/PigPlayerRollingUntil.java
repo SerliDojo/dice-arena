@@ -7,13 +7,13 @@ public abstract class PigPlayerRollingUntil extends PigPlayer {
 	}
 
 	@Override
-	public PigAction play(PigState state) {
-		if (shouldHold(state)) {
+	public PigAction play(PigMatch match) {
+		if (shouldHold(match)) {
 			return PigAction.HOLD;
 		}
 		return PigAction.ROLL;
 	}
 
-	protected abstract boolean shouldHold(PigState state);
+	protected abstract boolean shouldHold(PigMatch match);
 
 }

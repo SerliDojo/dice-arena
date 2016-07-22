@@ -7,7 +7,7 @@ public class PokerPlayerRolling extends PokerPlayer {
 	}
 
 	@Override
-	public PokerAction play(PokerState state) {
+	public PokerAction play(PokerMatch match) {
 		return PokerAction.roll(0, 1, 2, 3, 4);
 	}
 

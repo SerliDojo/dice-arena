@@ -12,8 +12,8 @@ public class PokerPlayerHoldingOverOnePair extends PokerPlayer {
 	}
 
 	@Override
-	public PokerAction play(PokerState state) {
-		if (NOT_ACCEPTABLES.contains(PokerHand.bestHand(state.turn.dice))) {
+	public PokerAction play(PokerMatch match) {
+		if (NOT_ACCEPTABLES.contains(PokerHand.bestHand(match.turn.dice))) {
 			return PokerAction.roll(0, 1, 2, 3, 4);
 		}
 		return PokerAction.hold();

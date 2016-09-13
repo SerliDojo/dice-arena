@@ -1,5 +1,8 @@
 package com.serli.dojo.arena.dice.poker;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class PokerTurn {
 
 	public final String player;
@@ -14,7 +17,11 @@ public class PokerTurn {
 		return new PokerTurn(player, dice.rolling(indexes), turnCount + 1);
 	}
 
-	private PokerTurn(String player, PokerDice dice, Integer turnCount) {
+	@JsonCreator
+	public PokerTurn(
+			@JsonProperty("player") String player,
+			@JsonProperty("dice") PokerDice dice,
+			@JsonProperty("turnCount") Integer turnCount) {
 		this.player = player;
 		this.turnCount = turnCount;
 		this.dice = dice;

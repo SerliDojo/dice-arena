@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.serli.dojo.arena.dice.Die;
 
 public class PokerDice {
@@ -14,7 +16,8 @@ public class PokerDice {
 		return new PokerDice(Die.roll(), Die.roll(), Die.roll(), Die.roll(), Die.roll());
 	}
 
-	public PokerDice(Integer... dice) {
+	@JsonCreator
+	public PokerDice(@JsonProperty("dice") Integer... dice) {
 		this.dice = dice;
 	}
 

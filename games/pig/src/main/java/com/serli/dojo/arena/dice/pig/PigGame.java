@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,17 @@ import com.serli.dojo.arena.dice.Game;
 public class PigGame implements Game<PigAction, PigMatch> {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(PigGame.class);
+
+	private final String name;
+
+	public PigGame(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
 
 	@Override
 	public PigMatch init(List<String> players) {
@@ -35,7 +48,7 @@ public class PigGame implements Game<PigAction, PigMatch> {
 			nextMatch = new PigMatch(scores, PigTurn.playing(getNextPlayer(turn.player, scores.keySet())));
 		} else {
 			int totalScore = turn.turnScore + turn.dieScore;
-			switch(action) {
+			switch (action) {
 			case ROLL:
 				LOGGER.info("{} continues with {} points", turn.player, totalScore);
 				nextMatch = new PigMatch(scores, turn.scoring());
@@ -43,7 +56,9 @@ public class PigGame implements Game<PigAction, PigMatch> {
 			case HOLD:
 				LOGGER.info("{} scores {} points", turn.player, totalScore);
 				scores.put(turn.player, scores.get(turn.player) + totalScore);
-				nextMatch = new PigMatch(scores, PigTurn.playing(getNextPlayer(turn.player, scores.keySet())));
+				nextMatch = new PigMatch(scores, PigTurn.playing(getNextPlayer(turn.player, scores.keySet())),
+						scores.values().stream().filter(score -> score >= 100).findAny().isPresent(),
+						scores.entrySet().stream().filter(entry -> entry.getValue() >= 100).map(Entry::getKey).collect(Collectors.toSet()));
 				break;
 			default:
 				LOGGER.info("{}'s choice not understood", turn.player, totalScore);

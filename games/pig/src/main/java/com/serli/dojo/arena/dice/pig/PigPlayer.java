@@ -11,7 +11,7 @@ public abstract class PigPlayer implements Player<PigAction, PigMatch> {
 	}
 
 	@Override
-	public String name() {
+	public String getName() {
 		return name;
 	}
 

@@ -16,7 +16,7 @@ public class PokerGameTest {
 				new PokerPlayerHolding("John"),
 				new PokerPlayerRolling("Bill"),
 				new PokerPlayerHoldingOverOnePair("Gary"));
-		PokerGame game = new PokerGame();
+		PokerGame game = new PokerGame("Test game");
 
 		PokerMatch match = Dealer.play(game, players);
 

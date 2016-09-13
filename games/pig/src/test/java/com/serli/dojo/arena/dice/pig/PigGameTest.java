@@ -16,7 +16,7 @@ public class PigGameTest {
 				new PigPlayerHolding("John"),
 				new PigPlayerHoldingAfterFifteenPointsEarned("Bill"),
 				new PigPlayerHoldingAfterFiveRolls("Gary"));
-		PigGame game = new PigGame();
+		PigGame game = new PigGame("Test Game");
 
 		PigMatch match = Dealer.play(game, players);
 

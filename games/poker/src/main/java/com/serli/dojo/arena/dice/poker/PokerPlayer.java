@@ -14,7 +14,7 @@ public abstract class PokerPlayer implements Player<PokerAction, PokerMatch> {
 	public abstract PokerAction play(PokerMatch match);
 
 	@Override
-	public String name() {
+	public String getName() {
 		return name;
 	}
 

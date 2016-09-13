@@ -1,5 +1,7 @@
 package com.serli.dojo.arena.dice.pig;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.serli.dojo.arena.dice.Die;
 
 public class PigTurn {
@@ -17,7 +19,12 @@ public class PigTurn {
 		return new PigTurn(player, turnScore + dieScore, turnCount + 1, Die.roll());
 	}
 
-	private PigTurn(String player, Integer turnScore, Integer turnCount, Integer dieScore) {
+	@JsonCreator
+	public PigTurn(
+			@JsonProperty("player") String player,
+			@JsonProperty("turnScore") Integer turnScore,
+			@JsonProperty("turnCount") Integer turnCount,
+			@JsonProperty("dieScore") Integer dieScore) {
 		this.player = player;
 		this.turnScore = turnScore;
 		this.turnCount = turnCount;

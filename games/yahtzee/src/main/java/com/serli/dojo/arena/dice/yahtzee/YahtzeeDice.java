@@ -1,12 +1,11 @@
 package com.serli.dojo.arena.dice.yahtzee;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.serli.dojo.arena.dice.Die;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class YahtzeeDice {
 

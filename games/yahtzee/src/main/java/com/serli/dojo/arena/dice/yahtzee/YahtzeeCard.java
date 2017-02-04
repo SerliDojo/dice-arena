@@ -1,9 +1,7 @@
 package com.serli.dojo.arena.dice.yahtzee;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.IntStream;
 
 public class YahtzeeCard {
 
@@ -18,7 +16,16 @@ public class YahtzeeCard {
     }
 
     public int score() {
-        return lines.values().stream().mapToInt(i -> i).sum();
+        return lines.values().stream().mapToInt(i -> i).sum()
+        + Optional.ofNullable(lines)
+                .map(Map::entrySet)
+                .map(Set::stream)
+                .map(stream -> stream.filter(entry -> YahtzeeLine.UPPER_SECTION.contains(entry.getKey())))
+                .map(stream -> stream.mapToInt(entry -> entry.getValue()))
+                .map(IntStream::sum)
+                .filter(sum -> sum >= 63)
+                .map(sum -> 35)
+                .orElse(0);
     }
 
     public boolean lineFree(YahtzeeLine line) {

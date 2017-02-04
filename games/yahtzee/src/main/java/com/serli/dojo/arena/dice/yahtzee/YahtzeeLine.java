@@ -8,6 +8,7 @@ import static java.util.stream.Collectors.groupingBy;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Function;
@@ -34,6 +35,8 @@ public enum YahtzeeLine {
 	CHANCE(sumForAll());
 
 	final Function<YahtzeeDice, Integer> score;
+
+	public static final List<YahtzeeLine> UPPER_SECTION = Arrays.asList(ACES, TWOS, THREES, FOURS, FIVES, SIXES);
 
 	private YahtzeeLine(Function<YahtzeeDice, Integer> score) {
 		this.score = score;

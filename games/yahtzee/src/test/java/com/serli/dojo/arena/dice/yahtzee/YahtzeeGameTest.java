@@ -21,8 +21,6 @@ public class YahtzeeGameTest {
 		Assert.assertNotNull(match);
 		Assert.assertNotNull(match.scores);
 		Assert.assertEquals(match.scores.size(), 3);
-		Assert.assertTrue(match.scores.values().stream()
-				.map(m -> m.values().stream().mapToInt(i -> i).sum())
-				.anyMatch(v -> v >= 100));
+		Assert.assertTrue(match.scores.values().stream().allMatch(YahtzeeCard::full));
 	}
 }

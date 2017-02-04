@@ -9,20 +9,19 @@ import com.serli.dojo.arena.dice.Match;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 @JsonInclude(Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class YahtzeeMatch implements Match<YahtzeeAction> {
 
-	public final LinkedHashMap<String, Map<YahtzeeLine, Integer>> scores;
+	public final LinkedHashMap<String, YahtzeeCard> scores;
 	public final YahtzeeTurn turn;
 	public final boolean finished;
 	public final Collection<String> winners;
 
 	@JsonCreator
 	public YahtzeeMatch(
-			@JsonProperty("name") final LinkedHashMap<String, Map<YahtzeeLine, Integer>> scores,
+			@JsonProperty("name") final LinkedHashMap<String, YahtzeeCard> scores,
 			@JsonProperty("turn") final YahtzeeTurn turn,
 			@JsonProperty("finished") final boolean finished,
 			@JsonProperty("winners") final Collection<String> winners) {
@@ -32,7 +31,7 @@ public class YahtzeeMatch implements Match<YahtzeeAction> {
 		this.winners = winners;
 	}
 
-	public YahtzeeMatch(final LinkedHashMap<String, Map<YahtzeeLine, Integer>> scores, final YahtzeeTurn turn) {
+	public YahtzeeMatch(final LinkedHashMap<String, YahtzeeCard> scores, final YahtzeeTurn turn) {
 		this.scores = scores;
 		this.turn = turn;
 		this.finished = false;

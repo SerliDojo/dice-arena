@@ -3,13 +3,14 @@ package com.serli.dojo.arena.dice.poker;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
+import com.serli.dojo.arena.dice.Dice;
 import org.junit.Test;
 
 public class PokerHandTest {
 
 	@Test
 	public void test12345() {
-		PokerDice dice = new PokerDice(1, 2, 3, 4, 5);
+		Dice dice = new Dice(1, 2, 3, 4, 5);
 
 		assertThat(PokerHand.HIGH_DIE.apply.test(dice), equalTo(true));
 		assertThat(PokerHand.HIGH_DIE.score.apply(dice), equalTo(5));
@@ -31,7 +32,7 @@ public class PokerHandTest {
 
 	@Test
 	public void test23456() {
-		PokerDice dice = new PokerDice(2, 3, 4, 5, 6);
+		Dice dice = new Dice(2, 3, 4, 5, 6);
 
 		assertThat(PokerHand.HIGH_DIE.apply.test(dice), equalTo(true));
 		assertThat(PokerHand.HIGH_DIE.score.apply(dice), equalTo(6));
@@ -53,7 +54,7 @@ public class PokerHandTest {
 
 	@Test
 	public void test12356() {
-		PokerDice dice = new PokerDice(1, 2, 3, 5, 6);
+		Dice dice = new Dice(1, 2, 3, 5, 6);
 
 		assertThat(PokerHand.HIGH_DIE.apply.test(dice), equalTo(true));
 		assertThat(PokerHand.HIGH_DIE.score.apply(dice), equalTo(6));
@@ -75,7 +76,7 @@ public class PokerHandTest {
 
 	@Test
 	public void test11234() {
-		PokerDice dice = new PokerDice(1, 1, 2, 3, 4);
+		Dice dice = new Dice(1, 1, 2, 3, 4);
 
 		assertThat(PokerHand.HIGH_DIE.apply.test(dice), equalTo(true));
 		assertThat(PokerHand.HIGH_DIE.score.apply(dice), equalTo(4));
@@ -97,7 +98,7 @@ public class PokerHandTest {
 
 	@Test
 	public void test11223() {
-		PokerDice dice = new PokerDice(1, 1, 2, 2, 3);
+		Dice dice = new Dice(1, 1, 2, 2, 3);
 
 		assertThat(PokerHand.HIGH_DIE.apply.test(dice), equalTo(true));
 		assertThat(PokerHand.HIGH_DIE.score.apply(dice), equalTo(3));
@@ -119,7 +120,7 @@ public class PokerHandTest {
 
 	@Test
 	public void test11123() {
-		PokerDice dice = new PokerDice(1, 1, 1, 2, 3);
+		Dice dice = new Dice(1, 1, 1, 2, 3);
 
 		assertThat(PokerHand.HIGH_DIE.apply.test(dice), equalTo(true));
 		assertThat(PokerHand.HIGH_DIE.score.apply(dice), equalTo(3));
@@ -141,7 +142,7 @@ public class PokerHandTest {
 
 	@Test
 	public void test11122() {
-		PokerDice dice = new PokerDice(1, 1, 1, 2, 2);
+		Dice dice = new Dice(1, 1, 1, 2, 2);
 
 		assertThat(PokerHand.HIGH_DIE.apply.test(dice), equalTo(true));
 		assertThat(PokerHand.HIGH_DIE.score.apply(dice), equalTo(2));
@@ -163,7 +164,7 @@ public class PokerHandTest {
 
 	@Test
 	public void test11112() {
-		PokerDice dice = new PokerDice(1, 1, 1, 1, 2);
+		Dice dice = new Dice(1, 1, 1, 1, 2);
 
 		assertThat(PokerHand.HIGH_DIE.apply.test(dice), equalTo(true));
 		assertThat(PokerHand.HIGH_DIE.score.apply(dice), equalTo(2));
@@ -185,7 +186,7 @@ public class PokerHandTest {
 
 	@Test
 	public void test66661() {
-		PokerDice dice = new PokerDice(6, 6, 6, 6, 1);
+		Dice dice = new Dice(6, 6, 6, 6, 1);
 
 		assertThat(PokerHand.HIGH_DIE.apply.test(dice), equalTo(true));
 		assertThat(PokerHand.HIGH_DIE.score.apply(dice), equalTo(6));
@@ -207,18 +208,18 @@ public class PokerHandTest {
 
 	@Test
 	public void testScores() {
-		assertThat(PokerHand.bestScore(new PokerDice(6, 5, 3, 2, 1)), equalTo(6));
-		assertThat(PokerHand.bestScore(new PokerDice(6, 6, 3, 2, 1)), equalTo(10));
-		assertThat(PokerHand.bestScore(new PokerDice(6, 5, 3, 1, 1)), equalTo(10));
-		assertThat(PokerHand.bestScore(new PokerDice(6, 6, 3, 1, 1)), equalTo(20));
-		assertThat(PokerHand.bestScore(new PokerDice(6, 3, 3, 1, 1)), equalTo(20));
-		assertThat(PokerHand.bestScore(new PokerDice(3, 3, 3, 2, 1)), equalTo(30));
-		assertThat(PokerHand.bestScore(new PokerDice(1, 5, 1, 3, 1)), equalTo(30));
-		assertThat(PokerHand.bestScore(new PokerDice(3, 3, 3, 1, 1)), equalTo(40));
-		assertThat(PokerHand.bestScore(new PokerDice(1, 3, 1, 3, 1)), equalTo(40));
-		assertThat(PokerHand.bestScore(new PokerDice(3, 3, 3, 3, 1)), equalTo(50));
-		assertThat(PokerHand.bestScore(new PokerDice(1, 3, 1, 1, 1)), equalTo(50));
-		assertThat(PokerHand.bestScore(new PokerDice(1, 2, 3, 4, 5)), equalTo(60));
-		assertThat(PokerHand.bestScore(new PokerDice(2, 3, 4, 5, 6)), equalTo(70));
+		assertThat(PokerHand.bestScore(new Dice(6, 5, 3, 2, 1)), equalTo(6));
+		assertThat(PokerHand.bestScore(new Dice(6, 6, 3, 2, 1)), equalTo(10));
+		assertThat(PokerHand.bestScore(new Dice(6, 5, 3, 1, 1)), equalTo(10));
+		assertThat(PokerHand.bestScore(new Dice(6, 6, 3, 1, 1)), equalTo(20));
+		assertThat(PokerHand.bestScore(new Dice(6, 3, 3, 1, 1)), equalTo(20));
+		assertThat(PokerHand.bestScore(new Dice(3, 3, 3, 2, 1)), equalTo(30));
+		assertThat(PokerHand.bestScore(new Dice(1, 5, 1, 3, 1)), equalTo(30));
+		assertThat(PokerHand.bestScore(new Dice(3, 3, 3, 1, 1)), equalTo(40));
+		assertThat(PokerHand.bestScore(new Dice(1, 3, 1, 3, 1)), equalTo(40));
+		assertThat(PokerHand.bestScore(new Dice(3, 3, 3, 3, 1)), equalTo(50));
+		assertThat(PokerHand.bestScore(new Dice(1, 3, 1, 1, 1)), equalTo(50));
+		assertThat(PokerHand.bestScore(new Dice(1, 2, 3, 4, 5)), equalTo(60));
+		assertThat(PokerHand.bestScore(new Dice(2, 3, 4, 5, 6)), equalTo(70));
 	}
 }

@@ -1,12 +1,12 @@
 package com.serli.dojo.arena.dice.poker;
 
 import static java.util.Arrays.asList;
-import static java.util.Arrays.stream;
 import static java.util.Comparator.comparing;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 
+import com.serli.dojo.arena.dice.Dice;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -18,7 +18,7 @@ public enum PokerHand {
 
 	HIGH_DIE(
 			dice -> true,
-			dice -> stream(dice.dice).max(Comparator.<Integer> naturalOrder()).orElse(0)
+			dice -> dice.values.stream().max(Comparator.<Integer> naturalOrder()).orElse(0)
 	), 
 	ONE_PAIR(
 			dice -> sidesAsManyAs(dice, 2).count() >= 1,
@@ -41,12 +41,12 @@ public enum PokerHand {
 			dice -> ONE_PAIR.score.apply(dice) + THREE_OF_A_KIND.score.apply(dice)
 	), 
 	STRAIGHT(
-			dice -> stream(dice.dice).distinct().count() == 5 && (!asList(dice.dice).contains(1) || !asList(dice.dice).contains(6)),
-			dice -> asList(dice.dice).contains(1) ? 60 : 70
+			dice -> dice.values.stream().distinct().count() == 5 && (!dice.values.contains(1) || !dice.values.contains(6)),
+			dice -> dice.values.contains(1) ? 60 : 70
 	);
 
-	final Predicate<PokerDice> apply;
-	final Function<PokerDice, Integer> score;
+	final Predicate<Dice> apply;
+	final Function<Dice, Integer> score;
 
 	private PokerHand(int sideCount, int groupCount) {
 		this(
@@ -55,7 +55,7 @@ public enum PokerHand {
 		);
 	}
 
-	private PokerHand(Predicate<PokerDice> apply, Function<PokerDice, Integer> score) {
+	private PokerHand(Predicate<Dice> apply, Function<Dice, Integer> score) {
 		this.apply = apply;
 		this.score = dice -> apply.test(dice) ? score.apply(dice) : 0;
 	}
@@ -63,19 +63,19 @@ public enum PokerHand {
 	private static final Comparator<Entry<Integer, Long>> BY_VALUE_DESC = Map.Entry.<Integer, Long> comparingByValue().reversed();
 	private static final Comparator<Entry<Integer, Long>> BY_KEY_DESC = Map.Entry.<Integer, Long> comparingByKey().reversed();
 
-	public static PokerHand bestHand(PokerDice dice) {
+	public static PokerHand bestHand(Dice dice) {
 		return asList(values()).stream()
 				.filter(hand -> hand.apply.test(dice))
 				.max(comparing(hand -> hand.score.apply(dice)))
 				.get();
 	}
 
-	public static Integer bestScore(PokerDice dice) {
+	public static Integer bestScore(Dice dice) {
 		return bestHand(dice).score.apply(dice);
 	}
 
-	public static Stream<Map.Entry<Integer, Long>> sidesAsManyAs(PokerDice dice, int count) {
-		return stream(dice.dice)
+	public static Stream<Map.Entry<Integer, Long>> sidesAsManyAs(Dice dice, int count) {
+		return dice.values.stream()
 				.collect(groupingBy(identity(), counting()))
 				.entrySet().stream()
 				.filter(entry -> entry.getValue() >= count)

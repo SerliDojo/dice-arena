@@ -1,11 +1,10 @@
 package com.serli.dojo.arena.dice.yahtzee;
 
-import static java.util.Arrays.stream;
-import static java.util.Comparator.comparing;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 
+import com.serli.dojo.arena.dice.Dice;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -34,11 +33,11 @@ public enum YahtzeeLine {
 	YAHTZEE(scoreIf(minGroupsOver(5, 1), 50)),
 	CHANCE(sumForAll());
 
-	final Function<YahtzeeDice, Integer> score;
+	final Function<Dice, Integer> score;
 
 	public static final List<YahtzeeLine> UPPER_SECTION = Arrays.asList(ACES, TWOS, THREES, FOURS, FIVES, SIXES);
 
-	private YahtzeeLine(Function<YahtzeeDice, Integer> score) {
+	private YahtzeeLine(Function<Dice, Integer> score) {
 		this.score = score;
 	}
 
@@ -46,23 +45,23 @@ public enum YahtzeeLine {
 
 	private static final Comparator<Entry<Integer, Long>> BY_KEY_DESC = Entry.<Integer, Long> comparingByKey().reversed();
 
-	private static Function<YahtzeeDice, Integer> sumForAll() {
-		return dice -> Arrays.stream(dice.dice).mapToInt(Integer::intValue).sum();
+	private static Function<Dice, Integer> sumForAll() {
+		return dice -> dice.values.stream().mapToInt(Integer::intValue).sum();
 	}
 
-	private static Function<YahtzeeDice, Integer> sumForAllIf(Predicate<YahtzeeDice> predicate) {
+	private static Function<Dice, Integer> sumForAllIf(Predicate<Dice> predicate) {
 		return dice -> Optional.ofNullable(dice).filter(predicate).map(sumForAll()).orElse(0);
 	}
 
-	private static Function<YahtzeeDice, Integer> sumForSide(int side) {
-		return dice -> Arrays.stream(dice.dice).filter(die -> die == side).mapToInt(Integer::intValue).sum();
+	private static Function<Dice, Integer> sumForSide(int side) {
+		return dice -> dice.values.stream().filter(die -> die == side).mapToInt(Integer::intValue).sum();
 	}
 
-	private static Function<YahtzeeDice, Integer> scoreIf(Predicate<YahtzeeDice> predicate, Integer score) {
+	private static Function<Dice, Integer> scoreIf(Predicate<Dice> predicate, Integer score) {
 		return dice -> Optional.ofNullable(dice).filter(predicate).map(d -> score).orElse(0);
 	}
 
-	public static Predicate<YahtzeeDice> missing(int... sides) {
+	public static Predicate<Dice> missing(int... sides) {
 		return dice -> Arrays.stream(sides)
 				.boxed()
 				.map(YahtzeeLine::missing)
@@ -71,19 +70,19 @@ public enum YahtzeeLine {
 				.test(dice);
 	}
 
-	public static Predicate<YahtzeeDice> missing(int side) {
-		return dice -> stream(dice.dice).noneMatch(Predicate.isEqual(side));
+	public static Predicate<Dice> missing(int side) {
+		return dice -> dice.values.stream().noneMatch(Predicate.isEqual(side));
 	}
 
-	public static Predicate<YahtzeeDice> minGroupsOver(int diceCount, int groupCount) {
+	public static Predicate<Dice> minGroupsOver(int diceCount, int groupCount) {
 		return dice -> Optional.ofNullable(dice)
 				.map(groupsOver(diceCount))
 				.filter(groups -> groups.count() >= groupCount)
                 .isPresent();
 	}
 
-	public static Function<YahtzeeDice, Stream<Integer>> groupsOver(int count) {
-		return dice -> stream(dice.dice)
+	public static Function<Dice, Stream<Integer>> groupsOver(int count) {
+		return dice -> dice.values.stream()
 				.collect(groupingBy(identity(), counting()))
 				.entrySet().stream()
 				.filter(entry -> entry.getValue() >= count)

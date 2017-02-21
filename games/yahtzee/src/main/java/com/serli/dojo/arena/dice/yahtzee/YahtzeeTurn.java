@@ -2,15 +2,16 @@ package com.serli.dojo.arena.dice.yahtzee;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.serli.dojo.arena.dice.Dice;
 
 public class YahtzeeTurn {
 
 	public final String player;
 	public final Integer turnCount;
-	public final YahtzeeDice dice;
+	public final Dice dice;
 
 	public static YahtzeeTurn playing(String player) {
-		return new YahtzeeTurn(player, YahtzeeDice.roll(), 1);
+		return new YahtzeeTurn(player, Dice.roll(5), 1);
 	}
 
 	public YahtzeeTurn rolling(Integer... indexes) {
@@ -20,7 +21,7 @@ public class YahtzeeTurn {
 	@JsonCreator
 	public YahtzeeTurn(
 			@JsonProperty("player") String player,
-			@JsonProperty("dice") YahtzeeDice dice,
+			@JsonProperty("dice") Dice dice,
 			@JsonProperty("turnCount") Integer turnCount) {
 		this.player = player;
 		this.turnCount = turnCount;
